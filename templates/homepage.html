@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}This will be the homepage{% endblock %}
+
+{% block body%}
+
+<h1>Welcome! Please log in </h1> <br>
+<form action='/login'>
+Email
+<input type="text" name="email"><br>
+Password
+<input type="text" name="password"><br>
+<input type="submit">
+</form>
+
+
+
+{% end block %}
