@@ -8,7 +8,7 @@ from flask import (Flask, render_template, request, flash, session,
                    redirect)
 import jinja2
 
-from model import connect_to_db, User
+from model import connect_to_db, User,db
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
@@ -38,22 +38,44 @@ def login():
 
     user = User.query.filter_by(email=email).first()
 
-    if password == user.password:
+    if email == "" or password == "":
+        flash("Email or Password invalid. Please try again.")
+        return redirect("/") 
+    elif password == user.password:
         # Call flask_login.login_user to login a user
         login_user(user)
 
         flash("YAY! You're Logged in!")
     
         return redirect("/users")
-    
-    flash("Email or Password invalid. Please try again.")
+    else:
+        flash("Email or Password invalid. Please try again.")
     
     return redirect("/")
 
-@app.route("/register", methods=["POST"])
+@app.route("/register", methods=["GET","POST"])
+def new_user():
+    """Creates a new User"""
+    
+    first_name = request.form.get("first_name")
+    email = request.form.get("new_user_email")
+    password = request.form.get("new_user_password")
+    
+    user = User.query.filter(User.email == email).first()
+    if first_name == "" and email == "" and password == "" :
+        return ("Please enter name, email and password to create new user")
 
+    if user:
+        #need to fix this to show pop up message
+        return ("This email is already in use")
+    else:
+        #add's new user to database
+        new_user = User(first_name=first_name, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit(new_user)
+
+        return redirect("/users")
  
-
 
 @app.route('/users')
 def users():

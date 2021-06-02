@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True, )
+    first_name = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
 
@@ -19,7 +20,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         """Show info about user"""
-        return f'<User_id = {self.user_id} Email = {self.email}>'
+        return f'<User_id = {self.user_id} First Name = {self.first_name} Email = {self.email}>'
 
 
 

@@ -5,5 +5,10 @@
 {% block body%}
 <h1> Now viewing users.html</h1>
 
+<h2>{% if current_user.is_authenticated %}
+    Welcome, {{current_user.first_name}}    
+    {% endif %}
+</h2>
+
 {% endblock %}
 

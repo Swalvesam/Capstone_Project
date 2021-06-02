@@ -9,11 +9,18 @@ Email:
 <input type="text" name="email"><br>
 Password:
 <input type="text" name="password"><br>
-<input type="submit" name="login"><br>
+<button type="submit" name="login">Login</button> <br>
 </form>
-
+<br>
 New user? 
-<button type="submit">Register</button>
-
+<form action="/register" method="POST">
+First Name:
+<input type="text" name="first_name"><br>
+Email:
+<input type="text" name="new_user_email"><br>
+Password:
+<input type="text" name="new_user_password"><br>
+<button type="submit" name="login">Register</button>
+</form>
 
 {% endblock %}
