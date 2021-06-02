@@ -4,14 +4,16 @@
 {% block body%}
 
 <h1>Welcome! Please log in </h1> <br>
-<form action='/login'>
-Email
+<form action="/login" method="POST">
+Email:
 <input type="text" name="email"><br>
-Password
+Password:
 <input type="text" name="password"><br>
-<input type="submit">
+<input type="submit" name="login"><br>
 </form>
 
+New user? 
+<button type="submit">Register</button>
 
 
-{% end block %}
+{% endblock %}
