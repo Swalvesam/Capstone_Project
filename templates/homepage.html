@@ -4,23 +4,26 @@
 {% block body%}
 
 <h1>Welcome! Please log in </h1> <br>
-<form action="/login" method="POST">
-Email:
-<input type="text" name="email"><br>
-Password:
-<input type="text" name="password"><br>
-<button type="submit" name="login">Login</button> <br>
-</form>
+<div id="user_login">
+    <form action="/login" method="POST">
+    Email:
+    <input type="text" name="email"><br>
+    Password:
+    <input type="text" name="password"><br>
+    <button type="submit" name="login">Login</button> <br>
+    </form>
+</div>
 <br>
-New user? 
-<form action="/register" method="POST">
-First Name:
-<input type="text" name="first_name"><br>
-Email:
-<input type="text" name="new_user_email"><br>
-Password:
-<input type="text" name="new_user_password"><br>
-<button type="submit" name="login">Register</button>
-</form>
-
+<div id="new_user">
+    New user? 
+    <form action="/register" method="POST">
+    First Name:
+    <input type="text" name="first_name"><br>
+    Email:
+    <input type="text" name="new_user_email"><br>
+    Password:
+    <input type="text" name="new_user_password"><br>
+    <button type="submit" name="login">Register</button>
+    </form>
+</div>
 {% endblock %}

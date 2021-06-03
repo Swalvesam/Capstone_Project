@@ -2,13 +2,13 @@
 
 from flask import Flask
 #Allow users to log in/manage login information
-from flask_login import LoginManager, login_user, login_required
+from flask_login import LoginManager, login_user, login_required, logout_user
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
 import jinja2
 
-from model import connect_to_db, User,db
+from model import connect_to_db, User, db
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
@@ -62,8 +62,8 @@ def new_user():
     password = request.form.get("new_user_password")
     
     user = User.query.filter(User.email == email).first()
-    if first_name == "" and email == "" and password == "" :
-        return ("Please enter name, email and password to create new user")
+    # if first_name == "" and email == "" and password == "" :
+    #     return ("Please enter name, email and password to create new user")
 
     if user:
         #need to fix this to show pop up message
@@ -72,7 +72,7 @@ def new_user():
         #add's new user to database
         new_user = User(first_name=first_name, email=email, password=password)
         db.session.add(new_user)
-        db.session.commit(new_user)
+        db.session.commit()
 
         return redirect("/users")
  
@@ -82,6 +82,11 @@ def users():
     """ View users profile """
 
     return render_template('users.html')
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/")
 
 @app.route('/homes')
 def homes():

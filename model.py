@@ -1,12 +1,13 @@
 """ Models for capstone project"""
 
 from flask_sqlalchemy import SQLAlchemy
+#unable users to login/logout
 from flask_login import UserMixin
 
 db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
-    """ A user"""
+    """A user"""
     __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True, )
@@ -22,10 +23,20 @@ class User(db.Model, UserMixin):
         """Show info about user"""
         return f'<User_id = {self.user_id} First Name = {self.first_name} Email = {self.email}>'
 
+# class Home_search(db.Model):
+#     """search for homes"""
 
 
 
 
+# class Saved_businesses(db.Model):
+    # """ Businesses saved by user"""
+
+# class Home_notes(db.Model):
+#     """User notes about home"""
+
+# class Business_notes(db.Model):
+#     """User notes about business"""
 
 
 
