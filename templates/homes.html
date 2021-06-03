@@ -4,5 +4,14 @@
 
 {% block body%}
 <h1> Now viewing homes.html</h1>
-
+<b>
+   <ol> {% for d in data %}
+        <li>{{d["rawAddress"]}}</li>
+        Price: {{d["price"]}}
+        Bedrooms: {{d["bedrooms"]}}
+        Bathrooms:{{d["bathrooms"]}} 
+        <br>
+        {% endfor %}
+    </ol>
+</b>
 {% endblock %}

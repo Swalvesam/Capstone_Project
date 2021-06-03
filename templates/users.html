@@ -10,6 +10,33 @@
     {% endif %}
 </h2>
 
+<p>Search for a Home
+    <form action=/home_search method="POST">
+    <label>Address: Must be formatted as street address, city, state zip  </label>
+    <input type="text" name="street_address"><br>
+    <label>City</label> <input type="text" name="city"> <br>
+    <label>State: Use 2 digit state abbreviation</label> <input type="text"  name="state"><br>
+    <label>Bedrooms</label> 
+        <select name="bedrooms">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    <label>Bathrooms</label>
+        <select name="bathrooms">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select> <br>
+    <button type="submit" name="home_results">Show Results</button>
+    </form>
+
+
+</p>
 <b1>List of saved homes</b1>
 <ul>
     <li>Saved homes will be displayed here</li>

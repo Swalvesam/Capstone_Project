@@ -8,6 +8,9 @@ from flask import (Flask, render_template, request, flash, session,
                    redirect)
 import jinja2
 
+#for API requests
+import requests, json
+
 from model import connect_to_db, User, db
 
 app = Flask(__name__)
@@ -76,6 +79,12 @@ def new_user():
 
         return redirect("/users")
  
+@app.route("/logout")
+def logout():
+    """Allows user to log out"""
+    logout_user()
+    return redirect("/")
+
 
 @app.route('/users')
 def users():
@@ -83,10 +92,41 @@ def users():
 
     return render_template('users.html')
 
-@app.route("/logout")
-def logout():
-    logout_user()
-    return redirect("/")
+@app.route('/home_search', methods=["GET", "POST"])
+def home_search():
+    """Allows users to search for homes for sale"""
+
+    URL = "https://realty-mole-property-api.p.rapidapi.com/saleListings"
+
+    HEADERS = {
+    'x-rapidapi-key': "facca4055emshcb21e87d3c94e12p19e6c5jsn13f7b8426702",
+    'x-rapidapi-host': "realty-mole-property-api.p.rapidapi.com"
+    }
+
+    address = request.form.get("street_address")
+    city = request.form.get("city")
+    state = request.form.get("state")
+    bedrooms = request.form.get("bedrooms")
+    bathrooms = request.form.get("bathrooms")
+    
+    querystring = {"bedrooms":bedrooms, 
+                    "bathrooms": bathrooms, 
+                    "city": city,
+                    "state": state}
+
+
+    response = requests.request("GET", URL, headers=HEADERS, params=querystring)
+    
+    data = json.loads(response.content)
+
+    for d in data:
+        print("*"* 20)
+        print(d["rawAddress"])
+        print("*" * 20) 
+    
+
+    return render_template('homes.html', data=data)
+
 
 @app.route('/homes')
 def homes():
@@ -100,11 +140,6 @@ def homes():
 
 #     return render_template('/businesses.html')
 
-# @app.route('/maps')
-# def maps():
-#     """View homes and businesses on map"""
-
-#     return render_template('/maps.html')
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -112,4 +147,3 @@ if __name__ == "__main__":
 
 
 
-# Hi, Im in Malala C, I'm getting a NameError User not defined 
