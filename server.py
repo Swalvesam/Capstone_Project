@@ -10,6 +10,7 @@ import jinja2
 
 #for API requests
 import requests, json
+import os
 
 from model import connect_to_db, User, db
 
@@ -99,7 +100,7 @@ def home_search():
     URL = "https://realty-mole-property-api.p.rapidapi.com/saleListings"
 
     HEADERS = {
-    'x-rapidapi-key': "facca4055emshcb21e87d3c94e12p19e6c5jsn13f7b8426702",
+    'x-rapidapi-key': os.environ['HOME_SEARCH_API_KEY'],
     'x-rapidapi-host': "realty-mole-property-api.p.rapidapi.com"
     }
 
@@ -118,11 +119,6 @@ def home_search():
     response = requests.request("GET", URL, headers=HEADERS, params=querystring)
     
     data = json.loads(response.content)
-
-    for d in data:
-        print("*"* 20)
-        print(d["rawAddress"])
-        print("*" * 20) 
     
 
     return render_template('homes.html', data=data)
