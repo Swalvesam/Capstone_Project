@@ -42,7 +42,7 @@ class Saved_homes(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
 
-
+    
 
     user = db.relationship("User", backref="saved_homes")
 

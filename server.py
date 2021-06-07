@@ -2,7 +2,7 @@
 
 from flask import Flask
 #Allow users to log in/manage login information
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
@@ -89,12 +89,11 @@ def logout():
     logout_user()
     return redirect("/")
 
-
 @app.route('/users')
 def users():
     """ View users profile """
-
-    return render_template('users.html')
+    saved_homes = Saved_homes.query.filter_by(user_id=current_user.user_id).all()
+    return render_template('users.html',saved_homes=saved_homes)
 
 @app.route('/home_search', methods=["GET"])
 def home_search():
@@ -138,22 +137,38 @@ def return_to_user_dashboard():
     """Returns user to user dashboard"""
     return redirect("/users")
 
-# @app.route('/save_home', methods="POST")
-# def save_home_to_user():
-#     """saves a home to user dashboard"""
-#     id = request.form.get("d['id']") 
+@app.route('/save_home', methods=["POST"])
+@login_required
+def save_home_to_user():
+    """saves a home to user dashboard"""
+    rm_property_id = request.form.get("homes_to_save")
+    # longitude = request.form.get("longitude")
+    # latitude = request.form.get("latitude")
+    # nickname = request.form.get("nickname")
 
+    saved_home = Saved_homes.query.filter_by(rm_property_id=rm_property_id).first()
+    if not saved_home:
 
-#     return redirect('/users')
-
-
-
-@app.route('/saved_homes')
-def view_saved_homes():
-    """ View saved homes"""
+        home = Saved_homes(
+                rm_property_id = rm_property_id,
+                user_id = current_user.user_id,
+                # longitude=longitude,
+                # latitude=latitude,
+                # nickname=nickname
+        )
     
+        db.session.add(home)
+        db.session.commit()
+    
+    print("*************************")
+    print(nickname)
+    print(rm_property_id)
+    print("**************************")
 
-    return render_template('homes.html')
+   
+
+    return redirect('/users')
+
 
 # @app.route('/businesses')
 # def businesses():

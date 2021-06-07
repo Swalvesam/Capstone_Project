@@ -44,9 +44,12 @@
         {{current_user.first_name}}'s saved homes   
         {% endif %}
     </b1>
+    
     <ul>
-        <li>Saved homes will be displayed here helloooo</li>
-        <li>Saved home: {{id}}</li>
+        {% for home in saved_homes %}
+        <li>{{{home.rm_property_id}}</li>
+        {% endfor %}
+
     </ul>
 </div>
 
