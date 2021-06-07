@@ -159,13 +159,6 @@ def save_home_to_user():
     
         db.session.add(home)
         db.session.commit()
-    
-    print("*************************")
-    print(nickname)
-    print(rm_property_id)
-    print("**************************")
-
-   
 
     return redirect('/users')
 
