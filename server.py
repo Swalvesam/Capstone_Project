@@ -12,11 +12,14 @@ import jinja2
 import requests, json
 import os
 
-from model import connect_to_db, User, db
+from model import connect_to_db, User, db, Saved_homes
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
 #app.jinja_env.undefined = StrictUndefined
+
+#Home API Key
+HOME_API = os.environ['HOME_SEARCH_API_KEY']
 
 #creates LoginManager and attaches to Flask app instance
 login_manager = LoginManager()
@@ -29,7 +32,7 @@ def homepage():
 
     return render_template('homepage.html')
 
-# #callback for login_manager.user_loader
+#callback for login_manager.user_loader
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -93,24 +96,26 @@ def users():
 
     return render_template('users.html')
 
-@app.route('/home_search', methods=["GET", "POST"])
+@app.route('/home_search', methods=["GET"])
 def home_search():
     """Allows users to search for homes for sale"""
 
     URL = "https://realty-mole-property-api.p.rapidapi.com/saleListings"
 
     HEADERS = {
-    'x-rapidapi-key': os.environ['HOME_SEARCH_API_KEY'],
+    'x-rapidapi-key': HOME_API,
     'x-rapidapi-host': "realty-mole-property-api.p.rapidapi.com"
     }
 
-    address = request.form.get("street_address")
-    city = request.form.get("city")
-    state = request.form.get("state")
-    bedrooms = request.form.get("bedrooms")
-    bathrooms = request.form.get("bathrooms")
+    price = request.args.get("max_price")
+    address = request.args.get("street_address")
+    city = request.args.get("city")
+    state = request.args.get("state")
+    bedrooms = request.args.get("bedrooms")
+    bathrooms = request.args.get("bathrooms")
     
-    querystring = {"bedrooms":bedrooms, 
+
+    querystring = { "bedrooms":bedrooms, 
                     "bathrooms": bathrooms, 
                     "city": city,
                     "state": state}
@@ -120,13 +125,33 @@ def home_search():
     
     data = json.loads(response.content)
     
+    #also filtering by max price set by user
+    filtered_data = []
+    for listing in data:
+        if listing["price"] <= int(price):
+            filtered_data.append(listing)
 
-    return render_template('homes.html', data=data)
+    return render_template('homes.html', data=filtered_data)
+
+@app.route('/return_to_user_dashboard')
+def return_to_user_dashboard():
+    """Returns user to user dashboard"""
+    return redirect("/users")
+
+# @app.route('/save_home', methods="POST")
+# def save_home_to_user():
+#     """saves a home to user dashboard"""
+#     id = request.form.get("d['id']") 
 
 
-@app.route('/homes')
-def homes():
-    """ View and search for homes"""
+#     return redirect('/users')
+
+
+
+@app.route('/saved_homes')
+def view_saved_homes():
+    """ View saved homes"""
+    
 
     return render_template('homes.html')
 
@@ -139,7 +164,7 @@ def homes():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(debug=True, host='0.0.0.0')
+    app.run(use_reloader=True, use_debugger=True)
 
 
 

@@ -4,14 +4,28 @@
 
 {% block body%}
 <h1> Now viewing homes.html</h1>
-<b>
-   <ol> {% for d in data %}
-        <li>{{d["rawAddress"]}}</li>
-        Price: {{d["price"]}}
-        Bedrooms: {{d["bedrooms"]}}
-        Bathrooms:{{d["bathrooms"]}} 
-        <br>
+<div class="home_search_results">
+   <ul> {% for d in data %}
+        <form method="POST" id="home_to_save">      
+            <li>{{d["rawAddress"]}}</li>
+            Price: {{d["price"]}} <br>
+            Bedrooms: {{d["bedrooms"]}}
+            Bathrooms:{{d["bathrooms"]}} <br>
+            Property Type: {{d["propertyType"]}} <br>
+            Days on Market: {{d["daysOnMarket"]}}<br>
+            <input type="checkbox" name="homes_to_save" value= "{{d['id']}}" ><label>Save</label>
+        </form>
+        
         {% endfor %}
-    </ol>
-</b>
+    </ul>
+    <form action="/save_home">
+        <button type="submit" name="save_homes">Save Marked Homes</button>
+    </form>
+</div>
+
+<div>
+    <form action="/return_to_user_dashboard">
+        <button type="submit" name="return_to_user">Return to User Dashboard</button>
+    </form>
+</div>
 {% endblock %}

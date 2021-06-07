@@ -10,12 +10,15 @@
     {% endif %}
 </h2>
 
-<p>Search for a Home
-    <form action=/home_search method="POST">
+
+<div id="home_search"><b>Search for a Home</b>
+    <form action=/home_search method="GET">
+    <label>Maximum Home Price</label> <input type="number" id="max_price" name="max_price" min="0" max="100,000,000"> <br>
     <label>Address: Must be formatted as street address, city, state zip  </label>
     <input type="text" name="street_address"><br>
     <label>City</label> <input type="text" name="city"> <br>
     <label>State: Use 2 digit state abbreviation</label> <input type="text"  name="state"><br>
+    </datalist> <br>
     <label>Bedrooms</label> 
         <select name="bedrooms">
             <option value="1">1</option>
@@ -36,11 +39,16 @@
     </form>
 
 
-</p>
-<b1>List of saved homes</b1>
-<ul>
-    <li>Saved homes will be displayed here</li>
-</ul>
+</div id="list_saved_homes">
+    <b1>{% if current_user.is_authenticated %}
+        {{current_user.first_name}}'s saved homes   
+        {% endif %}
+    </b1>
+    <ul>
+        <li>Saved homes will be displayed here helloooo</li>
+        <li>Saved home: {{id}}</li>
+    </ul>
+</div>
 
 <b2>List of Saved Businesses</b2>
 <ul>
@@ -52,6 +60,11 @@
     <button type="submit" name="logout">See ya later</button>
     </form>
 </b2>
+
+
+<div id="user_info"> User info: {{current_user.email}} </div>
+
+
 
 {% endblock %}
 

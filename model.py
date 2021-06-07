@@ -10,10 +10,12 @@ class User(db.Model, UserMixin):
     """A user"""
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True, )
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
+
+    #saved_homes = a list of saved homes by user
 
     def get_id(self):
         """ Override UserMixin.get_id."""
@@ -23,9 +25,32 @@ class User(db.Model, UserMixin):
         """Show info about user"""
         return f'<User_id = {self.user_id} First Name = {self.first_name} Email = {self.email}>'
 
-# class Home_search(db.Model):
-#     """search for homes"""
 
+class Saved_homes(db.Model):
+    """Homes saved by User"""
+    # def __init__(self):
+    #     homes_to_save = self.request.get('homes_to_save', allow_multiple=True)
+    
+    #     return homes_to_save
+
+    __tablename__ = "saved_homes"
+
+    saved_home_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    rm_property_id = db.Column(db.String)
+    nickname = db.Column(db.String)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+
+
+
+    user = db.relationship("User", backref="saved_homes")
+
+    def __repr__(self):
+        """Show info about Saved Homes"""
+        return f'<Saved_home_id: {self.saved_home_id} Nickname = {self.nickname} Latitude = {self.latitude}>'
+
+    
 
 
 
