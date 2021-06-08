@@ -162,6 +162,18 @@ def save_home_to_user():
 
     return redirect('/users')
 
+@app.route('/remove_saved_home', methods=["POST"])
+@login_required
+def remove_saved_home():
+
+    rm_property_id = request.form.get('remove_saved_home')
+
+    saved_home = Saved_homes.query.filter_by(rm_property_id=rm_property_id).first()
+
+    db.session.delete(saved_home)
+    db.session.commit()
+
+    return redirect("/users")
 
 # @app.route('/businesses')
 # def businesses():
