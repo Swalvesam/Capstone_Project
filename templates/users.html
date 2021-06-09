@@ -49,7 +49,7 @@
 
         <form action="/remove_saved_home" method="POST" id="remove_saved_home">
         {% for home in saved_homes %}
-        <li>{{home.rm_property_id}}</li>
+        <li>{{home.rm_property_id}} {{home.longitude}}</li>
 
         <button type="submit" name="remove_saved_home" value={{home.rm_property_id}}>Remove</button>
 

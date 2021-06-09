@@ -40,7 +40,6 @@ class SavedHomes(db.Model):
     longitude = db.Column(db.Float)
 
     #home_notes = user notes about home
-    
 
     user = db.relationship("User", backref="saved_homes")
 
@@ -84,7 +83,7 @@ def connect_to_db(flask_app, db_uri='postgresql:///users', echo=True):
     db.app = flask_app
     db.init_app(flask_app)
 
-    print('Connected to the db!')
+    print('db connected!')
 
 
 if __name__ == '__main__':

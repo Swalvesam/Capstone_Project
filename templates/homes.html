@@ -5,6 +5,29 @@
 {% block body%}
 <h1> Now viewing homes.html</h1>
 <div class="home_search_results">
+
+    {% for d in data %}   
+        <form action="/save_home" method="POST">
+            <ul>
+                <li>{{ d["rawAddress"] }}</li>
+                <li>Price: {{d["price"]}}</li>
+                <li>Bedrooms: {{d["bedrooms"]}}</li>
+                <li>Bathrooms:{{d["bathrooms"]}}</li>
+                <li>Property Type: {{d["propertyType"]}}</li>
+                <li>Days on Market: {{d["daysOnMarket"]}}</li>
+            </ul>
+
+            <input type="hidden" name="rm_property_id" value="{{ d['id'] }}">
+            <input type="hidden" name="longitude" value="{{ d['longitude'] }}">
+            <input type="hidden" name="latitude" value="{{ d['latitude'] }}">
+
+            <button type="submit">Save</button>
+        </form>
+    {% endfor %}
+
+
+
+  {#
     <form action="/save_home" method="POST" id="home_to_save">
 
     <ul> {% for d in data %}   
@@ -20,6 +43,7 @@
 
     </ul>
     </form>
+    #}
 </div>
 
 <div>

@@ -14,6 +14,7 @@ from datetime import datetime
 #for API requests
 import requests, json
 import os
+
 import crud
 from crud import register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note 
 
@@ -83,7 +84,7 @@ def new_user():
         #need to fix this to show pop up message
         return ("This email is already in use")
     else:
-        #add's new user to database
+        #adds new user to database
         crud.register_new_user(first_name,email,password)
 
         return redirect("/users")
@@ -152,14 +153,14 @@ def return_to_user_dashboard():
 @login_required
 def save_home_to_user():
     """Saves a home to user dashboard"""
-    rm_property_id = request.form.get("homes_to_save")
-    # longitude = request.form.get("longitude")
-    # latitude = request.form.get("latitude")
+    rm_property_id = request.form.get("rm_property_id")
+    longitude = request.form.get("longitude")
+    latitude = request.form.get("latitude")
     # nickname = request.form.get("nickname")
     user_id = current_user.user_id
     saved_home = SavedHomes.query.filter_by(rm_property_id=rm_property_id).first()
     if not saved_home:
-        crud.save_new_home(rm_property_id,user_id)
+        crud.save_new_home(rm_property_id,user_id,longitude,latitude)
 
     return redirect('/users')
 

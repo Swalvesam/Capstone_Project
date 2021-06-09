@@ -14,13 +14,13 @@ def register_new_user(first_name,email,password):
 
     return new_user
 
-def save_new_home(rm_property_id,user_id):
+def save_new_home(rm_property_id,user_id,longitude,latitude):
     """Creates a new saved home"""
     home = SavedHomes(
         rm_property_id = rm_property_id,
         user_id = user_id,
-        # longitude=longitude,
-        # latitude=latitude,
+        longitude=longitude,
+        latitude=latitude,
         # nickname=nickname
         )
     
