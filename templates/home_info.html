@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Home Info Page
+
+<title>Home Info</title>
+{% endblock %}
+
+{% block body %}
+<p1>Now viewing home_info.html</p1>
+
+<div id="view_home_info">
+    <body>
+        <b>Home Id:</b> {{property_id }}<br>
+
+        <form action="/add_home_note" id="add_home_note" method="POST">
+                <input type="hidden" name="property_id" value="{{property_id}}">
+           <br> <textarea name="body" placeholder="Write Note Here"></textarea>
+           <br> <button type="submit" name="add_note">Add Note</button> <br>
+        </form>
+
+        <b>Notes</b>
+        
+        <p1><ul>
+
+            {% for note in home_notes %}
+            <li>{{note.created_at}}<br>{{note.body}}<br></li>
+            {% endfor %}
+            </ul>
+            </form>
+        </p1>
+
+    </body>
+
+
+
+
+</div>
+
+
+{% endblock %}

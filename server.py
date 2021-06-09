@@ -8,11 +8,14 @@ from flask import (Flask, render_template, request, flash, session,
                    redirect)
 import jinja2
 
+#for createtime for notes
+from datetime import datetime
+
 #for API requests
 import requests, json
 import os
 
-from model import connect_to_db, User, db, Saved_homes
+from model import connect_to_db, User, db, Saved_homes, Home_notes
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
@@ -93,7 +96,8 @@ def logout():
 def users():
     """ View users profile """
     saved_homes = Saved_homes.query.filter_by(user_id=current_user.user_id).all()
-    return render_template('users.html',saved_homes=saved_homes)
+
+    return render_template('users.html',saved_homes=saved_homes) 
 
 @app.route('/home_search', methods=["GET"])
 def home_search():
@@ -174,6 +178,39 @@ def remove_saved_home():
     db.session.commit()
 
     return redirect("/users")
+
+@app.route('/view_home_info/<property_id>', methods=["GET","POST"])
+@login_required
+def view_home_info(property_id):
+
+    saved_home_id = request.form.get('view_home_info')
+    
+
+    home_notes = Home_notes.query.filter_by(saved_home_id=property_id).all()
+    
+    saved_home = Saved_homes.query.filter_by(saved_home_id=saved_home_id).first()
+
+    return render_template('home_info.html',saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id)
+
+@app.route('/add_home_note', methods=["POST"])
+@login_required
+def add_home_note():
+    saved_home_id = request.form.get("property_id")
+    print('**********************')
+    print(saved_home_id)
+    print('*************************')
+
+    body = request.form.get("body")
+
+    note = Home_notes(body=body, created_at = datetime.today(), saved_home_id=saved_home_id)
+
+    db.session.add(note)
+    db.session.commit()
+    
+
+    return redirect(f'/view_home_info/{saved_home_id}')
+
+
 
 # @app.route('/businesses')
 # def businesses():

@@ -46,12 +46,18 @@
     </b1>
     
     <ul>
-       <form action="/remove_saved_home" method="POST" id="remove_saved_home">
+        <!-- <form action="/view_home_info" method="GET" id="view_home_info"> -->
+        <form action="/remove_saved_home" method="POST" id="remove_saved_home">
         {% for home in saved_homes %}
-        <button type="submit" name="remove_saved_home" value={{home.rm_property_id}}>Remove</button>
         <li>{{home.rm_property_id}}</li>
+
+        <button type="submit" name="remove_saved_home" value={{home.rm_property_id}}>Remove</button>
+
+        <button onclick="location.href='/view_home_info/{{home.saved_home_id}}'" type="button">
+            View Saved Home</button>
         {% endfor %}
-        </form>
+    </form>
+    </form>
     </ul>
 </div>
 
