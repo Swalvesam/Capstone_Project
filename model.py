@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
         return f'<User_id = {self.user_id} First Name = {self.first_name} Email = {self.email}>'
 
 
-class Saved_homes(db.Model):
+class SavedHomes(db.Model):
     """Homes saved by User"""
     __tablename__ = "saved_homes"
 
@@ -48,7 +48,7 @@ class Saved_homes(db.Model):
         """Show info about Saved Homes"""
         return f'<Saved_home_id: {self.saved_home_id} Nickname = {self.nickname} Latitude = {self.latitude}>'
 
-class Home_notes(db.Model):
+class HomeNotes(db.Model):
     """User notes about home"""   
 
     __tablename__ = "home_notes"
@@ -58,7 +58,7 @@ class Home_notes(db.Model):
     created_at = db.Column(db.DateTime)
     saved_home_id = db.Column(db.Integer, db.ForeignKey('saved_homes.saved_home_id'))
 
-    saved_home = db.relationship("Saved_homes", backref="home_notes")
+    saved_home = db.relationship("SavedHomes", backref="home_notes")
 
     def __repr__(self):
         """Show info about Home Notes"""

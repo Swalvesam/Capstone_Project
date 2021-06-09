@@ -14,8 +14,10 @@ from datetime import datetime
 #for API requests
 import requests, json
 import os
+import crud
+from crud import register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note 
 
-from model import connect_to_db, User, db, Saved_homes, Home_notes
+from model import connect_to_db, User, db, SavedHomes, HomeNotes
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
@@ -67,22 +69,22 @@ def login():
 def new_user():
     """Creates a new User"""
     
+    #inputs by user to create user
     first_name = request.form.get("first_name")
     email = request.form.get("new_user_email")
     password = request.form.get("new_user_password")
     
     user = User.query.filter(User.email == email).first()
-    # if first_name == "" and email == "" and password == "" :
-    #     return ("Please enter name, email and password to create new user")
+    
+    if first_name == "" and email == "" and password == "" :
+        return ("Please enter name, email and password to create new user")
 
     if user:
         #need to fix this to show pop up message
         return ("This email is already in use")
     else:
         #add's new user to database
-        new_user = User(first_name=first_name, email=email, password=password)
-        db.session.add(new_user)
-        db.session.commit()
+        crud.register_new_user(first_name,email,password)
 
         return redirect("/users")
  
@@ -95,21 +97,22 @@ def logout():
 @app.route('/users')
 def users():
     """ View users profile """
-    saved_homes = Saved_homes.query.filter_by(user_id=current_user.user_id).all()
+    #need to pass in saved_homes in order to view them on user dashboard
+    saved_homes = SavedHomes.query.filter_by(user_id=current_user.user_id).all()
 
     return render_template('users.html',saved_homes=saved_homes) 
 
 @app.route('/home_search', methods=["GET"])
 def home_search():
     """Allows users to search for homes for sale"""
-
+    #api used for getting homes for sale
     URL = "https://realty-mole-property-api.p.rapidapi.com/saleListings"
 
     HEADERS = {
     'x-rapidapi-key': HOME_API,
     'x-rapidapi-host': "realty-mole-property-api.p.rapidapi.com"
     }
-
+    #user inputs to filter search results
     price = request.args.get("max_price")
     address = request.args.get("street_address")
     city = request.args.get("city")
@@ -117,15 +120,16 @@ def home_search():
     bedrooms = request.args.get("bedrooms")
     bathrooms = request.args.get("bathrooms")
     
-
+    #default params used by API
     querystring = { "bedrooms":bedrooms, 
                     "bathrooms": bathrooms, 
                     "city": city,
                     "state": state}
 
-
+    #data given back from API request
     response = requests.request("GET", URL, headers=HEADERS, params=querystring)
     
+    #changing into JSON in order to loop over data to set by max price
     data = json.loads(response.content)
     
     #also filtering by max price set by user
@@ -139,78 +143,73 @@ def home_search():
 @app.route('/return_to_user_dashboard')
 def return_to_user_dashboard():
     """Returns user to user dashboard"""
+
+    #buttons located on homes.html and home_info.html
+
     return redirect("/users")
 
 @app.route('/save_home', methods=["POST"])
 @login_required
 def save_home_to_user():
-    """saves a home to user dashboard"""
+    """Saves a home to user dashboard"""
     rm_property_id = request.form.get("homes_to_save")
     # longitude = request.form.get("longitude")
     # latitude = request.form.get("latitude")
     # nickname = request.form.get("nickname")
-
-    saved_home = Saved_homes.query.filter_by(rm_property_id=rm_property_id).first()
+    user_id = current_user.user_id
+    saved_home = SavedHomes.query.filter_by(rm_property_id=rm_property_id).first()
     if not saved_home:
-
-        home = Saved_homes(
-                rm_property_id = rm_property_id,
-                user_id = current_user.user_id,
-                # longitude=longitude,
-                # latitude=latitude,
-                # nickname=nickname
-        )
-    
-        db.session.add(home)
-        db.session.commit()
+        crud.save_new_home(rm_property_id,user_id)
 
     return redirect('/users')
 
 @app.route('/remove_saved_home', methods=["POST"])
 @login_required
 def remove_saved_home():
-
+    """removes home from saved home table"""
     rm_property_id = request.form.get('remove_saved_home')
 
-    saved_home = Saved_homes.query.filter_by(rm_property_id=rm_property_id).first()
-
-    db.session.delete(saved_home)
-    db.session.commit()
+    crud.remove_saved_home(rm_property_id)
 
     return redirect("/users")
 
 @app.route('/view_home_info/<property_id>', methods=["GET","POST"])
 @login_required
 def view_home_info(property_id):
+    """Allows user to view saved home info"""
 
     saved_home_id = request.form.get('view_home_info')
     
-
-    home_notes = Home_notes.query.filter_by(saved_home_id=property_id).all()
-    
-    saved_home = Saved_homes.query.filter_by(saved_home_id=saved_home_id).first()
+    home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
     return render_template('home_info.html',saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id)
 
 @app.route('/add_home_note', methods=["POST"])
 @login_required
 def add_home_note():
+    """Allows user to add note to saved home"""
+
     saved_home_id = request.form.get("property_id")
-    print('**********************')
-    print(saved_home_id)
-    print('*************************')
 
     body = request.form.get("body")
 
-    note = Home_notes(body=body, created_at = datetime.today(), saved_home_id=saved_home_id)
-
-    db.session.add(note)
-    db.session.commit()
-    
+    crud.create_home_note(body,saved_home_id)
 
     return redirect(f'/view_home_info/{saved_home_id}')
 
+@app.route('/remove_home_note', methods=["POST"])
+@login_required
+def remove_home_note():
+    """Allows user to delete home note"""
+   
+   #pulled from hidden input, need in order to refresh page after note removal
+    saved_home_id = request.form.get("property_id") 
 
+    home_note_id = request.form.get("remove_home_note")
+    
+    crud.remove_home_note(home_note_id)
+
+    return redirect(f'/view_home_info/{saved_home_id}')
 
 # @app.route('/businesses')
 # def businesses():

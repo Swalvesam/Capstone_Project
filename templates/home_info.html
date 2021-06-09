@@ -21,9 +21,11 @@
         <b>Notes</b>
         
         <p1><ul>
-
+            <form action="/remove_home_note" method="POST" id="remove_home_note">
+                <input type="hidden" name="property_id" value="{{property_id}}">
             {% for note in home_notes %}
             <li>{{note.created_at}}<br>{{note.body}}<br></li>
+            <button type="submit" name="remove_home_note" value={{note.home_note_id}}>Remove</button>
             {% endfor %}
             </ul>
             </form>
@@ -35,6 +37,10 @@
 
 
 </div>
-
+<div>
+    <form action="/return_to_user_dashboard">
+        <button type="submit" name="return_to_user">Return to User Dashboard</button>
+    </form>
+</div>
 
 {% endblock %}
