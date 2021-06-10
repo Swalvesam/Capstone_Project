@@ -31,6 +31,42 @@
             </form>
         </p1>
 
+        <div id=business_by_location>
+            <h2>Businesses close to Home listing</h2>
+            <p2>
+                <!-- <form action="/list_businesses" method="POST" id="list_businesses">
+                    <input type="hidden" name="property_id" value="{{property_id}}">
+                    {% for business in data %}
+                    <li>Name: {{business["name"]}}</li>
+
+                    {% endfor %}
+                
+                
+                <button type="submit">press me</button>
+                </form>
+                <input type="hidden" name="bus_home_id" value="{{ property_id }}"> -->
+                businesses listed here 
+
+
+                <br>
+
+                {% for business in data %} 
+                    <li>Name: {{business[{}]["id"]}} </li>
+
+                {% endfor %}
+
+
+
+
+            </p2>
+
+
+
+
+
+        </div>
+
+
     </body>
 
 

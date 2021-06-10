@@ -16,7 +16,8 @@ import requests, json
 import os
 
 import crud
-from crud import register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note 
+from crud import (register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note,
+                    saved_home_longitude, saved_home_latitude)
 
 from model import connect_to_db, User, db, SavedHomes, HomeNotes
 
@@ -27,10 +28,12 @@ app.secret_key = "secret-key"
 #Home API Key
 HOME_API = os.environ['HOME_SEARCH_API_KEY']
 
+#Yelp API Key
+YELP_API = os.environ['YELP_API_KEY']
+
 #creates LoginManager and attaches to Flask app instance
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 @app.route('/')
 def homepage():
@@ -113,6 +116,7 @@ def home_search():
     'x-rapidapi-key': HOME_API,
     'x-rapidapi-host': "realty-mole-property-api.p.rapidapi.com"
     }
+
     #user inputs to filter search results
     price = request.args.get("max_price")
     address = request.args.get("street_address")
@@ -126,7 +130,7 @@ def home_search():
                     "bathrooms": bathrooms, 
                     "city": city,
                     "state": state}
-
+    
     #data given back from API request
     response = requests.request("GET", URL, headers=HEADERS, params=querystring)
     
@@ -139,7 +143,11 @@ def home_search():
         if listing["price"] <= int(price):
             filtered_data.append(listing)
 
-    return render_template('homes.html', data=filtered_data)
+    if filtered_data == []:
+        flash("no homes found, Please try another search")
+        return redirect("/users")
+    else:
+        return render_template('homes.html', data=filtered_data)
 
 @app.route('/return_to_user_dashboard')
 def return_to_user_dashboard():
@@ -158,6 +166,7 @@ def save_home_to_user():
     latitude = request.form.get("latitude")
     # nickname = request.form.get("nickname")
     user_id = current_user.user_id
+
     saved_home = SavedHomes.query.filter_by(rm_property_id=rm_property_id).first()
     if not saved_home:
         crud.save_new_home(rm_property_id,user_id,longitude,latitude)
@@ -178,12 +187,16 @@ def remove_saved_home():
 @login_required
 def view_home_info(property_id):
     """Allows user to view saved home info"""
-
-    saved_home_id = request.form.get('view_home_info')
+    saved_home_id = request.form.get("property_id")
     
+    data = crud.list_businesses(property_id)
+    print("******************")
+    print(data)
+    print("******************")
+
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
-    return render_template('home_info.html',saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id)
+    return render_template('home_info.html',saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id,data=data)
 
 @app.route('/add_home_note', methods=["POST"])
 @login_required
@@ -195,6 +208,7 @@ def add_home_note():
     body = request.form.get("body")
 
     crud.create_home_note(body,saved_home_id)
+    
 
     return redirect(f'/view_home_info/{saved_home_id}')
 
@@ -212,6 +226,46 @@ def remove_home_note():
 
     return redirect(f'/view_home_info/{saved_home_id}')
 
+@app.route('/list_businesses', methods=["POST"])
+@login_required
+def list_businesses():
+    """Shows businesses near saved home longtitude and latitude"""
+    #need to query for longitude and latitude
+    saved_home_id = request.form.get("property_id")
+    
+    #SQL query to get longitude using saved_home_id
+    longitude = saved_home_longitude(saved_home_id)
+
+    #SQL query to get latitude using saved_home_id
+    latitude = crud.saved_home_latitude(saved_home_id)
+
+
+
+    API_HOST = 'https://api.yelp.com'
+    SEARCH_PATH = '/v3/businesses/search'
+    BUSINESS_PATH = '/v3/businesses/'
+
+     
+    headers = {
+        'Authorization': 'Bearer %s' % YELP_API
+
+    }
+    url = API_HOST + SEARCH_PATH
+
+    params = {'longitude': longitude, 'latitude': latitude }
+
+    business_search_url = API_HOST + SEARCH_PATH
+
+    req=requests.get(business_search_url, params=params,headers=headers)
+
+    data = json.loads(req.content)
+
+    print('*****************')
+    print(data)
+    print("******************")
+    return redirect(f'/view_home_info/{saved_home_id}')
+
+
 # @app.route('/businesses')
 # def businesses():
 #     """ View businesses"""
@@ -222,6 +276,4 @@ def remove_home_note():
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(use_reloader=True, use_debugger=True)
-
-
-
+ 
