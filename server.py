@@ -9,7 +9,7 @@ from flask import (Flask, render_template, request, flash, session,
 import jinja2
 
 #for createtime for notes
-from datetime import datetime
+from datetime import datetime, date
 
 #for API requests
 import requests, json
@@ -186,7 +186,7 @@ def remove_saved_home():
 @app.route('/view_home_info/<property_id>', methods=["GET","POST"])
 @login_required
 def view_home_info(property_id):
-    """Allows user to view saved home info"""
+    """Allows user to view saved home info and businesses near home"""
     saved_home_id = request.form.get("property_id")
     
     business_data = crud.list_businesses(property_id)
@@ -205,11 +205,9 @@ def view_home_info(property_id):
                                 round((float(business["distance"])/meter_to_mile),2),
                                 "".join([x + " " for x in business["location"]["display_address"]]))) #TODO loop over location info
 
-
     else:
         pass
         # TODO something else if we didn't get anything
-
 
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
@@ -242,7 +240,6 @@ def remove_home_note():
     crud.remove_home_note(home_note_id)
 
     return redirect(f'/view_home_info/{saved_home_id}')
-
 
 
 if __name__ == "__main__":

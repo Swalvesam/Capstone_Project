@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 #allows users to login/logout
 from flask_login import UserMixin
 #need to import for notes classes
-from datetime import datetime
+from datetime import datetime, date
 
 db = SQLAlchemy()
 

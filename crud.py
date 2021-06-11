@@ -8,10 +8,9 @@ from flask import (Flask, render_template, request, flash, session,
 from model import db, User, HomeNotes, SavedHomes, connect_to_db
 
 #for createtime for notes
-from datetime import datetime
+from datetime import datetime, date
 
 #Yelp API 
-
 YELP_API = os.environ['YELP_API_KEY']
 
 def register_new_user(first_name,email,password):
@@ -51,7 +50,7 @@ def remove_saved_home(rm_property_id):
 def create_home_note(body,saved_home_id):
     """Creates a new home note on saved home"""
 
-    note = HomeNotes(body=body, created_at = datetime.today(), saved_home_id=saved_home_id)
+    note = HomeNotes(body=body, created_at = date.today(), saved_home_id=saved_home_id)
 
     db.session.add(note)
     db.session.commit()
