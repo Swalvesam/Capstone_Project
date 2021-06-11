@@ -10,8 +10,13 @@ from model import db, User, HomeNotes, SavedHomes, connect_to_db
 #for createtime for notes
 from datetime import datetime
 
-#Yelp API Key
+
+
+#Yelp API 
+# from yelpapi import YelpAPI
 YELP_API = os.environ['YELP_API_KEY']
+# yelp_api = YelpAPI(YELP_API)
+
 
 def register_new_user(first_name,email,password):
     """creates a new user"""
@@ -69,6 +74,7 @@ def remove_home_note(home_note_id):
 
 def saved_home_longitude(bus_saved_home_id):
     """queries SavedHomes using saved_home_id to get longitude"""
+
     sql = "SELECT longitude FROM saved_homes WHERE saved_home_id = :saved_home_id"
 
     cursor = db.session.execute(sql,{"saved_home_id": bus_saved_home_id})
@@ -79,6 +85,7 @@ def saved_home_longitude(bus_saved_home_id):
 
 def saved_home_latitude(bus_saved_home_id):
     """queries SavedHomes using saved_home_id to get longitude"""
+
     sql = "SELECT latitude FROM saved_homes WHERE saved_home_id = :saved_home_id"
 
     cursor = db.session.execute(sql,{"saved_home_id": bus_saved_home_id})
@@ -92,18 +99,22 @@ def list_businesses(property_id):
     #need to query for longitude and latitude
     saved_home_id = property_id
 
-
     #SQL query to get longitude using saved_home_id
     longitude = saved_home_longitude(saved_home_id)
 
     #SQL query to get latitude using saved_home_id
     latitude = saved_home_latitude(saved_home_id)
+ 
 
+    # data = yelp_api.search_query(latitude=latitude,longitude=longitude)
+
+    # data = yelp_fusion.business_search(longitude=longitude,latitude=latitude)
     API_HOST = 'https://api.yelp.com'
     SEARCH_PATH = '/v3/businesses/search'
     BUSINESS_PATH = '/v3/businesses/'
 
-     
+    # TODO furture stuff save things we got back to the db and filter searches we already have data for
+
     headers = {
         'Authorization': 'Bearer %s' % YELP_API
 
@@ -119,3 +130,6 @@ def list_businesses(property_id):
     data = json.loads(req.content)
 
     return data
+
+
+

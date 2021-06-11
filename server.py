@@ -189,14 +189,30 @@ def view_home_info(property_id):
     """Allows user to view saved home info"""
     saved_home_id = request.form.get("property_id")
     
-    data = crud.list_businesses(property_id)
-    print("******************")
-    print(data)
-    print("******************")
+    business_data = crud.list_businesses(property_id)
+
+    businesses = []
+
+    if business_data != None and "businesses" in business_data and business_data["businesses"] != []: 
+        for business in business_data["businesses"]:
+            businesses.append(( business["name"],
+                                business["image_url"],
+                                business["url"],
+                                business["categories"],
+                                business["rating"],
+                                business["coordinates"],
+                                business["price"],
+                                "".join([x + " " for x in business["location"]["display_address"]]))) #TODO loop over location info
+
+
+    else:
+        pass
+        # TODO something else if we didn't get anything
+
 
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
-    return render_template('home_info.html',saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id,data=data)
+    return render_template('home_info.html',saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=businesses)
 
 @app.route('/add_home_note', methods=["POST"])
 @login_required
@@ -226,51 +242,6 @@ def remove_home_note():
 
     return redirect(f'/view_home_info/{saved_home_id}')
 
-@app.route('/list_businesses', methods=["POST"])
-@login_required
-def list_businesses():
-    """Shows businesses near saved home longtitude and latitude"""
-    #need to query for longitude and latitude
-    saved_home_id = request.form.get("property_id")
-    
-    #SQL query to get longitude using saved_home_id
-    longitude = saved_home_longitude(saved_home_id)
-
-    #SQL query to get latitude using saved_home_id
-    latitude = crud.saved_home_latitude(saved_home_id)
-
-
-
-    API_HOST = 'https://api.yelp.com'
-    SEARCH_PATH = '/v3/businesses/search'
-    BUSINESS_PATH = '/v3/businesses/'
-
-     
-    headers = {
-        'Authorization': 'Bearer %s' % YELP_API
-
-    }
-    url = API_HOST + SEARCH_PATH
-
-    params = {'longitude': longitude, 'latitude': latitude }
-
-    business_search_url = API_HOST + SEARCH_PATH
-
-    req=requests.get(business_search_url, params=params,headers=headers)
-
-    data = json.loads(req.content)
-
-    print('*****************')
-    print(data)
-    print("******************")
-    return redirect(f'/view_home_info/{saved_home_id}')
-
-
-# @app.route('/businesses')
-# def businesses():
-#     """ View businesses"""
-
-#     return render_template('/businesses.html')
 
 
 if __name__ == "__main__":

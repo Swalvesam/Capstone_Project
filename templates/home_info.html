@@ -2,7 +2,7 @@
 
 {% block title %}Home Info Page
 
-<title>Home Info</title>
+
 {% endblock %}
 
 {% block body %}
@@ -34,26 +34,27 @@
         <div id=business_by_location>
             <h2>Businesses close to Home listing</h2>
             <p2>
-                <!-- <form action="/list_businesses" method="POST" id="list_businesses">
-                    <input type="hidden" name="property_id" value="{{property_id}}">
-                    {% for business in data %}
-                    <li>Name: {{business["name"]}}</li>
 
-                    {% endfor %}
-                
-                
-                <button type="submit">press me</button>
-                </form>
-                <input type="hidden" name="bus_home_id" value="{{ property_id }}"> -->
                 businesses listed here 
-
-
-                <br>
-
-                {% for business in data %} 
-                    <li>Name: {{business[{}]["id"]}} </li>
-
+                <ul>
+                {% for bus in businesses %}
+                    <li> 
+                        {{bus[0]}}<!-- name-->
+                        <ul>
+                            <img src="{{bus[1]}}" width="80" height="80"> 
+                            <!-- <li>{{bus[1]}}</li>img -->
+                            <li><a href="{{bus[2]}}">View on Yelp</a></li><!--yelp url-->
+                            <input type="hidden" value="{{bus[3]}}"><!--category-->
+                            <li>Rating: {{bus[4]}}</li><!-- rating-->
+                            <input type="hidden" value="{{bus[5]}}"><!--coordinate-->
+                            <li>Price: {{bus[6]}}</li><!-- price-->
+                            <li>Address: {{bus[7]}}</li><!-- location-->
+                        </ul>
+                    </li>
                 {% endfor %}
+                </ul>
+
+
 
 
 
