@@ -195,13 +195,14 @@ def view_home_info(property_id):
 
     if business_data != None and "businesses" in business_data and business_data["businesses"] != []: 
         for business in business_data["businesses"]:
+            meter_to_mile = 1609.344
             businesses.append(( business["name"],
                                 business["image_url"],
                                 business["url"],
                                 business["categories"],
                                 business["rating"],
                                 business["coordinates"],
-                                business["price"],
+                                round((float(business["distance"])/meter_to_mile),2),
                                 "".join([x + " " for x in business["location"]["display_address"]]))) #TODO loop over location info
 
 

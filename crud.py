@@ -10,13 +10,9 @@ from model import db, User, HomeNotes, SavedHomes, connect_to_db
 #for createtime for notes
 from datetime import datetime
 
-
-
 #Yelp API 
-# from yelpapi import YelpAPI
-YELP_API = os.environ['YELP_API_KEY']
-# yelp_api = YelpAPI(YELP_API)
 
+YELP_API = os.environ['YELP_API_KEY']
 
 def register_new_user(first_name,email,password):
     """creates a new user"""
@@ -105,10 +101,6 @@ def list_businesses(property_id):
     #SQL query to get latitude using saved_home_id
     latitude = saved_home_latitude(saved_home_id)
  
-
-    # data = yelp_api.search_query(latitude=latitude,longitude=longitude)
-
-    # data = yelp_fusion.business_search(longitude=longitude,latitude=latitude)
     API_HOST = 'https://api.yelp.com'
     SEARCH_PATH = '/v3/businesses/search'
     BUSINESS_PATH = '/v3/businesses/'
