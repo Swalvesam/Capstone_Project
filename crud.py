@@ -137,6 +137,15 @@ def save_new_business(yelp_id,user_id,latitude,longitude):
 
     return business
 
-def view_business_name(yelp_id):
+# def view_business_name(yelp_id):
+
+
+def remove_saved_business(yelp_id):
+    """removes saved_business"""
+    saved_business = SavedBusinesses.query.filter_by(yelp_id=yelp_id).first()
+
+    db.session.delete(saved_business)
+    db.session.commit()
     
+    return saved_business
 

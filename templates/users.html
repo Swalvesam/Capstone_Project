@@ -63,8 +63,11 @@
 
 <b2>List of Saved Businesses</b2>
 <ul>
+    <form action="/remove_saved_business" method="POST" id="remove_saved_business">
     {%for business in saved_businesses %}
     <li>{{business.yelp_id}}</li>
+    <button type="submit" name="remove_saved_business" value={{business.yelp_id}}>Remove</button>
+    </form>
     {% endfor %}
 </ul>
 

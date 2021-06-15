@@ -17,7 +17,7 @@ import os
 
 import crud
 from crud import (register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note,
-                    saved_home_longitude, saved_home_latitude, save_new_business)
+                    saved_home_longitude, saved_home_latitude, save_new_business, remove_saved_business)
 
 from model import connect_to_db, User, db, SavedHomes, HomeNotes, SavedBusinesses
 
@@ -268,7 +268,15 @@ def save_business():
 
     return redirect('/users')
 
+@app.route('/remove_saved_business', methods=["POST"])
+@login_required
+def remove_saved_business():
+    """removes business from saved_businesses table"""
+    yelp_id = request.form.get('remove_saved_business')
 
+    crud.remove_saved_business(yelp_id)
+
+    return redirect("/users")
 
 
 if __name__ == "__main__":
