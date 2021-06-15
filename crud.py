@@ -5,7 +5,7 @@ import os
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
 
-from model import db, User, HomeNotes, SavedHomes, connect_to_db
+from model import db, User, HomeNotes, SavedHomes, SavedBusinesses, connect_to_db
 
 #for createtime for notes
 from datetime import datetime, date
@@ -122,5 +122,21 @@ def list_businesses(property_id):
 
     return data
 
+def save_new_business(yelp_id,user_id,latitude,longitude):
+    """creates a new saved business"""
 
+    business = SavedBusinesses(
+        yelp_id = yelp_id,
+        user_id = user_id,
+        latitude = latitude,
+        longitude = longitude
+        )
+
+    db.session.add(business)
+    db.session.commit()
+
+    return business
+
+def view_business_name(yelp_id):
+    
 

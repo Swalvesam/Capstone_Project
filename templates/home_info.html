@@ -32,38 +32,37 @@
         </p1>
 
         <div id=business_by_location>
-            <h2>Businesses close to Home listing</h2>
+            <h2>Businesses Close to Home Listing</h2>
             <p2>
 
-                businesses listed here 
                 <ul>
                 {% for bus in businesses %}
+                <form action="/save_business" method="POST">
                     <li> 
                         {{bus[0]}}<!-- name-->
+                        <input type="hidden" name="name" value="{{bus[0]}}">
                         <ul>
                             <img src="{{bus[1]}}" width="80" height="80"> 
                             <!-- <li>{{bus[1]}}</li>img -->
                             <li><a href="{{bus[2]}}">View on Yelp</a></li><!--yelp url-->
                             <input type="hidden" value="{{bus[3]}}"><!--category-->
                             <li>Rating: {{bus[4]}}</li><!-- rating-->
-                            <input type="hidden" value="{{bus[5]}}"><!--coordinates-->
+                            <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
+                            <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
+                            <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
+                            <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
                             <li>Distance: {{bus[6]}} miles</li><!--distance-->
                             <li>Address: {{bus[7]}}</li><!-- location-->
+                            <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
+                            <button type="submit">Save</button>
                         </ul>
                     </li>
+                </form>
                 {% endfor %}
+                
                 </ul>
 
-
-
-
-
-
             </p2>
-
-
-
-
 
         </div>
 

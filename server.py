@@ -17,9 +17,9 @@ import os
 
 import crud
 from crud import (register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note,
-                    saved_home_longitude, saved_home_latitude)
+                    saved_home_longitude, saved_home_latitude, save_new_business)
 
-from model import connect_to_db, User, db, SavedHomes, HomeNotes
+from model import connect_to_db, User, db, SavedHomes, HomeNotes, SavedBusinesses
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
@@ -104,7 +104,10 @@ def users():
     #need to pass in saved_homes in order to view them on user dashboard
     saved_homes = SavedHomes.query.filter_by(user_id=current_user.user_id).all()
 
-    return render_template('users.html',saved_homes=saved_homes) 
+    #also passing in saved_businesses to view on user dashboard
+    saved_businesses = SavedBusinesses.query.filter_by(user_id=current_user.user_id).all()
+
+    return render_template('users.html',saved_homes=saved_homes, saved_businesses=saved_businesses) 
 
 @app.route('/home_search', methods=["GET"])
 def home_search():
@@ -140,7 +143,7 @@ def home_search():
     #also filtering by max price set by user
     filtered_data = []
     for listing in data:
-        if listing["price"] <= int(price):
+        if int(listing["price"]) <= int(price):
             filtered_data.append(listing)
 
     if filtered_data == []:
@@ -168,6 +171,7 @@ def save_home_to_user():
     user_id = current_user.user_id
 
     saved_home = SavedHomes.query.filter_by(rm_property_id=rm_property_id).first()
+    
     if not saved_home:
         crud.save_new_home(rm_property_id,user_id,longitude,latitude)
 
@@ -203,11 +207,17 @@ def view_home_info(property_id):
                                 business["rating"],
                                 business["coordinates"],
                                 round((float(business["distance"])/meter_to_mile),2),
-                                "".join([x + " " for x in business["location"]["display_address"]]))) #TODO loop over location info
+                                "".join([x + " " for x in business["location"]["display_address"]]),
+                                business["review_count"],
+                                business["id"])) 
 
     else:
         pass
         # TODO something else if we didn't get anything
+        # flash("no businesses close to this home")
+
+
+
 
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
@@ -240,6 +250,25 @@ def remove_home_note():
     crud.remove_home_note(home_note_id)
 
     return redirect(f'/view_home_info/{saved_home_id}')
+
+@app.route('/save_business', methods=["POST"])
+@login_required
+def save_business():
+    """saves businesses to user dashboard"""
+
+    yelp_id = request.form.get("yelp_id")
+    longitude = request.form.get("longitude")
+    latitude = request.form.get("latitude")
+    user_id = current_user.user_id
+
+    saved_business = SavedBusinesses.query.filter_by(yelp_id=yelp_id).first()
+
+    if not saved_business:
+        crud.save_new_business(yelp_id,user_id,latitude,longitude)
+
+    return redirect('/users')
+
+
 
 
 if __name__ == "__main__":

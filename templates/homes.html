@@ -16,7 +16,7 @@
                 <li>Property Type: {{d["propertyType"]}}</li>
                 <li>Days on Market: {{d["daysOnMarket"]}}</li>
             </ul>
-
+            <input type="hidden" name="address" value="{{ d['rawAddress'] }}">
             <input type="hidden" name="rm_property_id" value="{{ d['id'] }}">
             <input type="hidden" name="longitude" value="{{ d['longitude'] }}">
             <input type="hidden" name="latitude" value="{{ d['latitude'] }}">

@@ -63,7 +63,9 @@
 
 <b2>List of Saved Businesses</b2>
 <ul>
-    <li>Saved businesses will be displayed here</li>
+    {%for business in saved_businesses %}
+    <li>{{business.yelp_id}}</li>
+    {% endfor %}
 </ul>
 
 <b2>Ready to logout? 

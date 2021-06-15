@@ -54,7 +54,7 @@ class HomeNotes(db.Model):
 
     home_note_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     body = db.Column(db.Text)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.Date)
     saved_home_id = db.Column(db.Integer, db.ForeignKey('saved_homes.saved_home_id'))
 
     saved_home = db.relationship("SavedHomes", backref="home_notes")
@@ -64,10 +64,22 @@ class HomeNotes(db.Model):
         return f'<home_note_id: {self.home_note_id} created_at: {self.created_at} saved_home_id: {self.saved_home_id}>'
 
 
-# class Saved_businesses(db.Model):
-    # """ Businesses saved by user"""
+class SavedBusinesses(db.Model):
+    """Businesses saved by user"""
 
+    __tablename__ = "saved_businesses"
 
+    saved_business_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    yelp_id = db.Column(db.String)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+
+    user = db.relationship("User", backref="saved_businesses")
+
+    def __repr__(self):
+        """ Show info about Saved Businesses"""
+        return f'<saved_business_id: {self.saved_business_id} yelp_id: {self.yelp_id} latitude = {self.latitude}>'
 
 # class Business_notes(db.Model):
 #     """User notes about business"""
