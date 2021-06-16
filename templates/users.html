@@ -3,7 +3,6 @@
 {% block title %}Users homepage{% endblock %}
 
 {% block body%}
-<h1> Now viewing users.html</h1>
 
 <h2>{% if current_user.is_authenticated %}
     Welcome, {{current_user.first_name}}    
@@ -49,9 +48,11 @@
 
         <form action="/remove_saved_home" method="POST" id="remove_saved_home">
         {% for home in saved_homes %}
-        <li>{{home.rm_property_id}}</li>
+        <li>{{home.address}}</li>
+        <input type="hidden" name="home_property_id" value="{{home.rm_property_id}}">
+        <input type="hidden" name="saved_home_id" value="{{home.saved_home_id}}">
 
-        <button type="submit" name="remove_saved_home" value={{home.rm_property_id}}>Remove</button>
+        <button type="submit" name="remove_saved_home" value="{{home.rm_property_id}}">Remove</button>
 
         <button onclick="location.href='/view_home_info/{{home.saved_home_id}}'" type="button">
             View Saved Home</button>
@@ -65,7 +66,7 @@
 <ul>
     <form action="/remove_saved_business" method="POST" id="remove_saved_business">
     {%for business in saved_businesses %}
-    <li>{{business.yelp_id}}</li>
+    <li>{{business.bus_name}}</li>
     <button type="submit" name="remove_saved_business" value={{business.yelp_id}}>Remove</button>
     </form>
     {% endfor %}
@@ -78,7 +79,7 @@
 </b2>
 
 
-<div id="user_info"> User info: {{current_user.email}} </div>
+<!-- <div id="user_info"> User info: {{current_user.email}} </div> -->
 
 
 

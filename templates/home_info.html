@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block body %}
-<p1>Now viewing home_info.html</p1>
+
 
 <div id="view_home_info">
     <body>
-        <b>Home Id:</b> {{property_id }}<br>
+        <b>Home Address:</b> {{ home_address }}<br>
 
         <form action="/add_home_note" id="add_home_note" method="POST">
                 <input type="hidden" name="property_id" value="{{property_id}}">

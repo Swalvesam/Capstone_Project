@@ -23,14 +23,14 @@ def register_new_user(first_name,email,password):
 
     return new_user
 
-def save_new_home(rm_property_id,user_id,longitude,latitude):
+def save_new_home(user_id, rm_property_id, longitude, latitude, address):
     """Creates a new saved home"""
     home = SavedHomes(
-        rm_property_id = rm_property_id,
         user_id = user_id,
+        rm_property_id = rm_property_id,
         longitude=longitude,
         latitude=latitude,
-        #nickname=nickname
+        address=address,
         )
     
     db.session.add(home)
@@ -67,23 +67,23 @@ def remove_home_note(home_note_id):
 
     return note
 
-def saved_home_longitude(bus_saved_home_id):
+def saved_home_longitude(saved_home_id):
     """queries SavedHomes using saved_home_id to get longitude"""
 
     sql = "SELECT longitude FROM saved_homes WHERE saved_home_id = :saved_home_id"
 
-    cursor = db.session.execute(sql,{"saved_home_id": bus_saved_home_id})
+    cursor = db.session.execute(sql,{"saved_home_id": saved_home_id})
 
     longitude = cursor.fetchone()
 
     return longitude
 
-def saved_home_latitude(bus_saved_home_id):
+def saved_home_latitude(saved_home_id):
     """queries SavedHomes using saved_home_id to get longitude"""
 
     sql = "SELECT latitude FROM saved_homes WHERE saved_home_id = :saved_home_id"
 
-    cursor = db.session.execute(sql,{"saved_home_id": bus_saved_home_id})
+    cursor = db.session.execute(sql,{"saved_home_id": saved_home_id})
 
     latitude = cursor.fetchone()
 
@@ -119,15 +119,18 @@ def list_businesses(property_id):
     req=requests.get(business_search_url, params=params,headers=headers)
 
     data = json.loads(req.content)
+    print("*****************")
+    print(longitude)
 
     return data
 
-def save_new_business(yelp_id,user_id,latitude,longitude):
+def save_new_business(user_id, bus_name, yelp_id, latitude, longitude):
     """creates a new saved business"""
 
     business = SavedBusinesses(
-        yelp_id = yelp_id,
         user_id = user_id,
+        yelp_id = yelp_id,        
+        bus_name = bus_name,
         latitude = latitude,
         longitude = longitude
         )
@@ -136,9 +139,6 @@ def save_new_business(yelp_id,user_id,latitude,longitude):
     db.session.commit()
 
     return business
-
-# def view_business_name(yelp_id):
-
 
 def remove_saved_business(yelp_id):
     """removes saved_business"""
@@ -149,3 +149,15 @@ def remove_saved_business(yelp_id):
     
     return saved_business
 
+def get_address(saved_home_id):
+    """To show home address on home_info page"""
+
+    sql = "SELECT address FROM saved_homes WHERE saved_home_id= :saved_home_id"
+
+    cursor = db.session.execute(sql,{"saved_home_id": saved_home_id})
+
+    old_address = cursor.fetchone()
+    
+    address = " ".join(old_address)
+
+    return address

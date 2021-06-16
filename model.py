@@ -35,10 +35,9 @@ class SavedHomes(db.Model):
     saved_home_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     rm_property_id = db.Column(db.String)
-    nickname = db.Column(db.String)
-    latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
-
+    latitude = db.Column(db.Float)
+    address = db.Column(db.Text)
     #home_notes = user notes about home
 
     user = db.relationship("User", backref="saved_homes")
@@ -71,6 +70,7 @@ class SavedBusinesses(db.Model):
 
     saved_business_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    bus_name = db.Column(db.String)
     yelp_id = db.Column(db.String)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
