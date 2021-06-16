@@ -171,7 +171,7 @@ def save_home_to_user():
     latitude = request.form.get("latitude")
     address = request.form.get("address")
 
-    print("********************")
+    print("*********longitude***********")
     print(longitude)
 
     saved_home = SavedHomes.query.filter_by(rm_property_id=rm_property_id).first()
@@ -197,6 +197,15 @@ def view_home_info(property_id):
     """Allows user to view saved home info and businesses near home"""
     saved_home_id = property_id
     
+    #using to impliment google maps on page based on saved home
+    home_longitude = crud.saved_home_longitude(saved_home_id)
+    home_latitude = crud.saved_home_latitude(saved_home_id)
+
+    # print("(****************************")
+    # print(home_longitude)
+    # print(type(home_longitude))
+
+    #shows home address at top of page 
     home_address = crud.get_address(saved_home_id)
 
     business_data = crud.list_businesses(property_id)
@@ -227,7 +236,8 @@ def view_home_info(property_id):
     
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
-    return render_template('home_info.html', saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=sorted_businesses, home_address=home_address)
+    return render_template('home_info.html', saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=sorted_businesses, home_address=home_address,
+                            home_longitude=home_longitude[0], home_latitude=home_latitude[0])
 
 @app.route('/add_home_note', methods=["POST"])
 @login_required

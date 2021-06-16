@@ -1,0 +1,12 @@
+
+/* style google maps on site */
+
+  #map {
+    height: 80%;
+  }
+  html, body {
+    height: 80%;
+    margin: 0;
+    padding: 0;
+    background-color: red;
+  }
