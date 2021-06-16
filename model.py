@@ -27,7 +27,6 @@ class User(db.Model, UserMixin):
         """Show info about user"""
         return f'<User_id = {self.user_id} First Name = {self.first_name} Email = {self.email}>'
 
-
 class SavedHomes(db.Model):
     """Homes saved by User"""
     __tablename__ = "saved_homes"
@@ -62,7 +61,6 @@ class HomeNotes(db.Model):
         """Show info about Home Notes"""
         return f'<home_note_id: {self.home_note_id} created_at: {self.created_at} saved_home_id: {self.saved_home_id}>'
 
-
 class SavedBusinesses(db.Model):
     """Businesses saved by user"""
 
@@ -80,12 +78,6 @@ class SavedBusinesses(db.Model):
     def __repr__(self):
         """ Show info about Saved Businesses"""
         return f'<saved_business_id: {self.saved_business_id} yelp_id: {self.yelp_id} latitude = {self.latitude}>'
-
-# class Business_notes(db.Model):
-#     """User notes about business"""
-
-
-
 
 def connect_to_db(flask_app, db_uri='postgresql:///users', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

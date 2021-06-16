@@ -221,13 +221,13 @@ def view_home_info(property_id):
         pass
         # TODO something else if we didn't get anything
         # flash("no businesses close to this home")
-    print("******************")
-    print(business_data)
-    print("******************")
 
+    #sorts businesses by distance from saved home
+    sorted_businesses = sorted(businesses, key=lambda business: business[6])
+    
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
-    return render_template('home_info.html', saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=businesses, home_address=home_address)
+    return render_template('home_info.html', saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=sorted_businesses, home_address=home_address)
 
 @app.route('/add_home_note', methods=["POST"])
 @login_required
@@ -272,7 +272,7 @@ def save_business():
     if not saved_business:
         crud.save_new_business(user_id, bus_name, yelp_id, latitude, longitude)
 
-    return redirect('/users', )
+    return redirect('/users')
 
 @app.route('/remove_saved_business', methods=["POST"])
 @login_required

@@ -4,10 +4,10 @@
 
 {% block body%}
 
-<h2>{% if current_user.is_authenticated %}
+<h1>{% if current_user.is_authenticated %}
     Welcome, {{current_user.first_name}}    
     {% endif %}
-</h2>
+</h1>
 
 
 <div id="home_search"><b>Search for a Home</b>
@@ -39,10 +39,10 @@
 
 
 </div id="list_saved_homes">
-    <b1>{% if current_user.is_authenticated %}
+    <h2>{% if current_user.is_authenticated %}
         {{current_user.first_name}}'s saved homes   
         {% endif %}
-    </b1>
+    </h2>
     
     <ul>
 
@@ -62,7 +62,10 @@
     </ul>
 </div>
 
-<b2>List of Saved Businesses</b2>
+<h2> {% if current_user.is_authenticated %}
+    {{current_user.first_name}}'s saved businesses   
+    {% endif %}
+</h2>
 <ul>
     <form action="/remove_saved_business" method="POST" id="remove_saved_business">
     {%for business in saved_businesses %}

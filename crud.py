@@ -119,8 +119,6 @@ def list_businesses(property_id):
     req=requests.get(business_search_url, params=params,headers=headers)
 
     data = json.loads(req.content)
-    print("*****************")
-    print(longitude)
 
     return data
 
