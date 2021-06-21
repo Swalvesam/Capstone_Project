@@ -7,9 +7,15 @@
 <head>
 
 <style>
-    #map {
+#map {
     height: 500px;
     width: 75%;
+
+  }
+#pano {
+    height: 500px;
+    width: 75%;
+
   }
   html, body {
     margin: 0;
@@ -18,15 +24,14 @@
   }
 </style>
 
-<script>let homeLatitude= {{ home_latitude | tojson }};
+<script>
+        let homeLatitude= {{ home_latitude | tojson }};
         let homeLongitude = {{ home_longitude | tojson }};
         let homeTitle = {{ home_address | tojson }};
+        let businesses = {{ businesses | tojson }};
 </script>
 <script src="/static/google_map.js"></script>
 
-<!-- <script async
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=initMap">
-</script> -->
 </head>
 {% endblock%}
 
@@ -73,8 +78,8 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0
                             <li>Rating: {{bus[4]}}</li><!-- rating-->
                             <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
                             <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
-                            <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
-                            <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
+                            <input type="hidden" id="longitude" value="{{bus[5].longitude}}"><!--longitude-->
+                            <input type="hidden" id="latitude" value="{{bus[5].latitude}}"><!--latitude-->
                             <li>Distance: {{bus[6]}} miles</li><!--distance-->
                             <li>Address: {{bus[7]}}</li><!-- location-->
                             <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
@@ -96,14 +101,12 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0
         <h3>Map to go here</h3>
         
         <div id="map"> </div>
-        <script async 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=initMap"
-        >
-
+        <div id="pano"></div>
+        <script
+        async 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=initMap">
         </script>
     </body>
-
-
 
 
 </div>

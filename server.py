@@ -2,7 +2,7 @@
 
 from flask import Flask
 #Allow users to log in/manage login information
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
@@ -90,7 +90,10 @@ def new_user():
     else:
         #adds new user to database
         crud.register_new_user(first_name,email,password)
-
+        
+        new_user = User.query.filter(User.email == email).first()
+        login_user(new_user)
+    
         return redirect("/users")
  
 @app.route("/logout")
@@ -109,6 +112,7 @@ def users():
     saved_businesses = SavedBusinesses.query.filter_by(user_id=current_user.user_id).all()
 
     return render_template('users.html',saved_homes=saved_homes, saved_businesses=saved_businesses) 
+
 
 @app.route('/home_search', methods=["GET"])
 def home_search():
@@ -171,9 +175,6 @@ def save_home_to_user():
     latitude = request.form.get("latitude")
     address = request.form.get("address")
 
-    print("*********longitude***********")
-    print(longitude)
-
     saved_home = SavedHomes.query.filter_by(rm_property_id=rm_property_id).first()
     
     if not saved_home:
@@ -200,10 +201,6 @@ def view_home_info(property_id):
     #using to impliment google maps on page based on saved home
     home_longitude = crud.saved_home_longitude(saved_home_id)
     home_latitude = crud.saved_home_latitude(saved_home_id)
-
-    # print("(****************************")
-    # print(home_longitude)
-    # print(type(home_longitude))
 
     #shows home address at top of page 
     home_address = crud.get_address(saved_home_id)
@@ -233,7 +230,7 @@ def view_home_info(property_id):
 
     #sorts businesses by distance from saved home
     sorted_businesses = sorted(businesses, key=lambda business: business[6])
-    
+
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
     return render_template('home_info.html', saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=sorted_businesses, home_address=home_address,
