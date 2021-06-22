@@ -93,7 +93,7 @@ def new_user():
         
         new_user = User.query.filter(User.email == email).first()
         login_user(new_user)
-    
+
         return redirect("/users")
  
 @app.route("/logout")
@@ -110,7 +110,12 @@ def users():
 
     #also passing in saved_businesses to view on user dashboard
     saved_businesses = SavedBusinesses.query.filter_by(user_id=current_user.user_id).all()
+    # print("*************************")
+    # directions = (saved_businesses)
+    # print(directions)
 
+
+    
     return render_template('users.html',saved_homes=saved_homes, saved_businesses=saved_businesses) 
 
 
@@ -230,6 +235,8 @@ def view_home_info(property_id):
 
     #sorts businesses by distance from saved home
     sorted_businesses = sorted(businesses, key=lambda business: business[6])
+    print("************************")
+    print(type(sorted_businesses))
 
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 

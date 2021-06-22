@@ -77,7 +77,7 @@ class SavedBusinesses(db.Model):
 
     def __repr__(self):
         """ Show info about Saved Businesses"""
-        return f'<saved_business_id: {self.saved_business_id} yelp_id: {self.yelp_id} latitude = {self.latitude}>'
+        return f'[(bus_name: {self.bus_name}), (latitude: {self.latitude}), (longitude: {self.longitude})]'
 
 def connect_to_db(flask_app, db_uri='postgresql:///users', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

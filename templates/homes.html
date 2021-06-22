@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 
 {% block title %}Homes{% endblock %}
+{% block head %}
+<head>
+<script> 
+    let data = {{ data | tojson }}
+</script>
+<style>
+    #home-map {
+        height: 500px;
+        width: 75%;
+    
+      }
+    html, body {
+    margin: 0;
+    padding: 0;
 
+    }
+</style>
+<script src="/static/google_map.js"></script>
+
+</head>
+{% endblock %}
 {% block body%}
+
+<body>
 <h1>Home Search Results</h1>
 <div class="home_search_results">
 
@@ -26,6 +48,13 @@
     {% endfor %}
 
 </div>
+<div id="home-map"> </div>
+<div id="pano"></div>
+<script
+async 
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=homes">
+</script>
+</body>
 
 <div>
     <form action="/return_to_user_dashboard">

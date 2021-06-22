@@ -1,7 +1,34 @@
 {% extends 'base.html' %}
 
-{% block title %}Users homepage{% endblock %}
+{% block title %}User Homepage{% endblock %}
+{% block head %}
+<head>
 
+<style>
+#map {
+    height: 500px;
+    width: 75%;
+
+  }
+#pano {
+    height: 500px;
+    width: 75%;
+
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+
+  }
+</style>
+
+<script>
+
+</script>
+<script src="/static/google_map.js"></script>
+
+</head>
+{% endblock%}
 {% block body%}
 
 <h1>{% if current_user.is_authenticated %}
@@ -81,6 +108,14 @@
     </form>
 </b2>
 
+<div id="directions">
+
+</div>
+
+<!-- <script
+async 
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=directions">
+</script> -->
 
 <!-- <div id="user_info"> User info: {{current_user.email}} </div> -->
 
