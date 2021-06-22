@@ -14,7 +14,8 @@ function initMap() {
         document.querySelector('#map'),
         {
             center: savedHomeCoords,
-            zoom: 15
+            zoom: 15,
+            mapId: 'e54bf19c5f6ff97',
         }
     );
 
@@ -77,6 +78,7 @@ function homes() {
         document.querySelector("#home-map"),{
             center: new google.maps.LatLng(0,0),
             zoom: 15,
+            mapId: 'e54bf19c5f6ff97',
         },
         );     
     // using to center map by markers
@@ -89,7 +91,7 @@ function homes() {
 
         const homeMarker = new google.maps.Marker({
             position: latLng,
-            icon: "/static/icons/home.png",
+            icon: "/static/icons/homes.png",
             map: searchMap
         });
 
@@ -102,17 +104,17 @@ function homes() {
         const homeWindow = new google.maps.InfoWindow({
             content: homeContent,
         });
-
+        //shows home address info window when homemarker clicked
         homeMarker.addListener("click", () => {
             homeWindow.open({
                 anchor: homeMarker,
                 shouldFocus: false,
             })
         });
-        //extends map view based on each home marker
+        //extends map bounderies based on each home marker
         bounds.extend(latLng);
     }
-    //enables map size to view all markers
+    //impliments map boundries so all markers are in view
     searchMap.fitBounds(bounds);
 
 };
