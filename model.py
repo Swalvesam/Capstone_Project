@@ -75,6 +75,17 @@ class SavedBusinesses(db.Model):
 
     user = db.relationship("User", backref="saved_businesses")
 
+    def to_dict(self):
+        """returns dictionary of saved_businesses"""
+
+        return {
+                'bus_name': self.bus_name,
+                'latitude': self.latitude,
+                'longitude': self.longitude,
+        }
+
+
+
     def __repr__(self):
         """ Show info about Saved Businesses"""
         return f'[(bus_name: {self.bus_name}), (latitude: {self.latitude}), (longitude: {self.longitude})]'

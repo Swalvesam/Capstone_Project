@@ -7,7 +7,7 @@
     let data = {{ data | tojson }}
 </script>
 <style>
-    #home-map {
+    #home-map, #pano-map {
         height: 500px;
         width: 75%;
     
@@ -37,6 +37,7 @@
                 <li>Bathrooms:{{d["bathrooms"]}}</li>
                 <li>Property Type: {{d["propertyType"]}}</li>
                 <li>Days on Market: {{d["daysOnMarket"]}}</li>
+                <li>Image <img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location={{d['latitude']}},{{ d['longitude'] }}&heading=151.78&pitch=-0.76&key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&"> </li>
             </ul>
             <input type="hidden" name="address" value="{{ d['rawAddress'] }}">
             <input type="hidden" name="rm_property_id" value="{{ d['id'] }}">
@@ -49,7 +50,7 @@
 
 </div>
 <div id="home-map"> </div>
-<div id="pano"></div>
+<div id="pano-map"></div>
 <script
 async 
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=homes">

@@ -4,7 +4,7 @@ from flask import Flask
 #Allow users to log in/manage login information
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 
-from flask import (Flask, render_template, request, flash, session,
+from flask import (Flask, render_template, request, flash, session, jsonify,
                    redirect)
 import jinja2
 
@@ -110,13 +110,14 @@ def users():
 
     #also passing in saved_businesses to view on user dashboard
     saved_businesses = SavedBusinesses.query.filter_by(user_id=current_user.user_id).all()
-    # print("*************************")
-    # directions = (saved_businesses)
-    # print(directions)
-
-
     
-    return render_template('users.html',saved_homes=saved_homes, saved_businesses=saved_businesses) 
+    # changes saved_businesses into a dictionary
+    bus_dict = []
+    for bus in saved_businesses:
+        b = bus.to_dict()
+        bus_dict.append(b)
+
+    return render_template('users.html',saved_homes=saved_homes, saved_businesses=saved_businesses,bus_dict=bus_dict) 
 
 
 @app.route('/home_search', methods=["GET"])

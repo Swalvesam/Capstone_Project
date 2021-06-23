@@ -60,15 +60,14 @@ function initMap() {
         {
             position: savedHomeCoords,
             pov: {
-                heading: 34,
-                pitch: 10,
+                heading: 0,
+                pitch: 0,
             },
         }
     );
     homeMap.setStreetView(homeView);
 
 };
-
 
 function homes() {
     // map showing on homes.html 
@@ -95,11 +94,22 @@ function homes() {
             map: searchMap
         });
 
+        // // creates pano map
+        // const homePano = new google.maps.StreetViewPanorama (
+        //     document.getElementById("pano-map"),
+        //     {
+        //         position: latLng,
+        //         pov: {
+        //             heading: 0,
+        //             pitch: 0,
+        //         },
+        //     })
 
-        const homeContent = 
-        '<div id="homeContent">' +
-            `<b1> ${home.rawAddress} </b1><br>` +
-        '</div>';
+        const homeContent = (
+        "<div id='homeContent'>" +
+            `<b1> ${home.rawAddress}</b1><br>` +
+            `<b2> <img src='https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${home.latitude},${home.longitude}&heading=151.78&pitch=-0.76&key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&'> </b2>` +
+        "</div>");
 
         const homeWindow = new google.maps.InfoWindow({
             content: homeContent,
@@ -111,23 +121,29 @@ function homes() {
                 shouldFocus: false,
             })
         });
+
         //extends map bounderies based on each home marker
         bounds.extend(latLng);
+
     }
     //impliments map boundries so all markers are in view
     searchMap.fitBounds(bounds);
+     
 
 };
-// function directions() {
-//     // map showing on users.html 
-//     // get directions from user current location to saved business
+
+
+
+function directions() {
+    // map showing on users.html 
+    // get directions from user current location to saved business
 
 // try this code for get directions
-// if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(function (position) {
-//         initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-//         map.setCenter(initialLocation);
-//     });
-// }
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        map.setCenter(initialLocation);
+    });
+}
 
-// };
+};
