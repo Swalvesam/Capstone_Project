@@ -94,17 +94,6 @@ function homes() {
             map: searchMap
         });
 
-        // // creates pano map
-        // const homePano = new google.maps.StreetViewPanorama (
-        //     document.getElementById("pano-map"),
-        //     {
-        //         position: latLng,
-        //         pov: {
-        //             heading: 0,
-        //             pitch: 0,
-        //         },
-        //     })
-
         const homeContent = (
         "<div id='homeContent'>" +
             `<b1> ${home.rawAddress}</b1><br>` +
@@ -134,16 +123,10 @@ function homes() {
 
 
 
-function directions() {
-    // map showing on users.html 
-    // get directions from user current location to saved business
 
-// try this code for get directions
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-        initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        map.setCenter(initialLocation);
-    });
-}
 
-};
+
+
+
+
+

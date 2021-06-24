@@ -5,25 +5,22 @@
 <head>
 
 <style>
-#map {
+#directions {
     height: 500px;
     width: 75%;
 
   }
-#pano {
-    height: 500px;
-    width: 75%;
 
-  }
   html, body {
     margin: 0;
     padding: 0;
 
   }
+
 </style>
 
 <script>
-     let bus = {{ bus_dict | tojson }};
+
 </script>
 <script src="/static/google_map.js"></script>
 
@@ -102,7 +99,7 @@
     <li>{{business.bus_name}}</li>
     <button type="submit" name="remove_saved_business" value={{business.yelp_id}}>Remove</button>
     </form>
-    <button type="submit" id="get-directions" value={{business.bus_name}}>Get Directions</button>
+    <a href="{{business.yelp_url}}"><button type="submit">View on Yelp</button></a>
     {% endfor %}
 </ul>
 
@@ -112,9 +109,8 @@
     </form>
 </b2>
 
-<div id="directions">
 
-</div>
+
 
 <script
 async 

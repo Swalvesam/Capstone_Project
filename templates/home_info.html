@@ -5,6 +5,7 @@
 
 {% block head %}
 <head>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
 <style>
 #map {
@@ -22,6 +23,7 @@
     padding: 0;
 
   }
+  
 </style>
 
 <script>
@@ -31,6 +33,12 @@
         let businesses = {{ businesses | tojson }};
 </script>
 <script src="/static/google_map.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    var quill = new Quill('#editor', {
+      theme: 'snow'
+    });
+  </script>
 
 </head>
 {% endblock%}
@@ -41,12 +49,13 @@
 <div id="view_home_info">
     <body>
         <b>Home Address:</b> {{ home_address }}<br>
-
-        <form action="/add_home_note" id="add_home_note" method="POST">
-                <input type="hidden" name="property_id" value="{{property_id}}">
-           <br> <textarea name="body" placeholder="Write Note Here"></textarea>
-           <br> <button type="submit" name="add_note">Add Note</button> <br>
-        </form>
+        <div id="editor">
+            <form action="/add_home_note" id="add_home_note" method="POST">
+                    <input type="hidden" name="property_id" value="{{property_id}}">
+            <br> <textarea name="body" placeholder="Write Note Here"></textarea>
+            <br> <button type="submit" name="add_note">Add Note</button> <br>
+            </form>
+        </div>
 
         <b>Notes</b>
         
@@ -61,6 +70,21 @@
             </form>
         </p1>
 
+       
+        <div id="saved-businesses">
+
+            <h2>Saved Businesses</h2>
+            <form action="/remove_saved_bus" method="POST" id="remove_saved_business">
+                {% if saved_bus %}
+                    {% for b in saved_bus %}
+                        <li>{{b.bus_name}}</li>
+                        <button type="submit" name="remove_saved_bus" value={{b.yelp_id}}>Remove</button>
+                    {% endfor %}
+                {% endif %}
+                <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to remove business-->
+            </form> 
+        </div>
+
         <div id=business_by_location>
             <h2>Businesses Close to Home</h2>
             <p2>
@@ -68,9 +92,10 @@
                 <ul>
                 {% for bus in businesses %}
                 <form action="/save_business" method="POST">
+
                     <li> 
                         {{bus[0]}}<!-- name-->
-                        <input type="hidden" name="name" value="{{bus[0]}}">
+                        <input type="hidden" id="name" name="name" value="{{bus[0]}}">
                         <ul>
                             <img src="{{bus[1]}}" width="80" height="80"> <!--img -->
                             <li><a href="{{bus[2]}}">View on Yelp</a></li><!--yelp url-->
@@ -78,11 +103,13 @@
                             <li>Rating: {{bus[4]}}</li><!-- rating-->
                             <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
                             <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
-                            <input type="hidden" id="longitude" value="{{bus[5].longitude}}"><!--longitude-->
-                            <input type="hidden" id="latitude" value="{{bus[5].latitude}}"><!--latitude-->
+                            <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
+                            <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
                             <li>Distance: {{bus[6]}} miles</li><!--distance-->
                             <li>Address: {{bus[7]}}</li><!-- location-->
                             <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
+                            <input type="hidden" name="yelp_url" value="{{bus[2]}}"><!--yelp url-->
+                            <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to save business-->
                             <button type="submit">Save</button>
                         </ul>
                     </li>
@@ -106,6 +133,7 @@
         async 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=initMap">
         </script>
+        
     </body>
 
 

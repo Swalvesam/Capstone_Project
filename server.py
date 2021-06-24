@@ -18,7 +18,7 @@ import os
 import crud
 from crud import (register_new_user, save_new_home, remove_saved_home, create_home_note, remove_home_note,
                     saved_home_longitude, saved_home_latitude, save_new_business, remove_saved_business,
-                    get_address)
+                    get_address, saved_businesses)
 
 from model import connect_to_db, User, db, SavedHomes, HomeNotes, SavedBusinesses
 
@@ -110,7 +110,9 @@ def users():
 
     #also passing in saved_businesses to view on user dashboard
     saved_businesses = SavedBusinesses.query.filter_by(user_id=current_user.user_id).all()
-    
+    print("**********users************")
+    print(saved_businesses)
+
     # changes saved_businesses into a dictionary
     bus_dict = []
     for bus in saved_businesses:
@@ -211,6 +213,7 @@ def view_home_info(property_id):
     #shows home address at top of page 
     home_address = crud.get_address(saved_home_id)
 
+    #parces yelp api to get businesses near home
     business_data = crud.list_businesses(property_id)
 
     businesses = []
@@ -236,13 +239,14 @@ def view_home_info(property_id):
 
     #sorts businesses by distance from saved home
     sorted_businesses = sorted(businesses, key=lambda business: business[6])
-    print("************************")
-    print(type(sorted_businesses))
 
+    #views all notes user has made about saved home
     home_notes = HomeNotes.query.filter_by(saved_home_id=property_id).all()
 
+    saved_bus = SavedBusinesses.query.filter_by(saved_home_id=saved_home_id).all()
+
     return render_template('home_info.html', saved_home_id=saved_home_id, home_notes=home_notes,property_id=property_id, businesses=sorted_businesses, home_address=home_address,
-                            home_longitude=home_longitude[0], home_latitude=home_latitude[0])
+                            home_longitude=home_longitude[0], home_latitude=home_latitude[0], saved_bus=saved_bus)
 
 @app.route('/add_home_note', methods=["POST"])
 @login_required
@@ -276,18 +280,22 @@ def remove_home_note():
 @login_required
 def save_business():
     """saves businesses to user dashboard"""
+    
+
     user_id = current_user.user_id
     bus_name = request.form.get("name")
     yelp_id = request.form.get("yelp_id")
     latitude = request.form.get("latitude")
     longitude = request.form.get("longitude")
+    yelp_url = request.form.get("yelp_url")
+    saved_home_id = request.form.get("property_id")
 
     saved_business = SavedBusinesses.query.filter_by(yelp_id=yelp_id).first()
 
     if not saved_business:
-        crud.save_new_business(user_id, bus_name, yelp_id, latitude, longitude)
+        crud.save_new_business(user_id, bus_name, yelp_id, latitude, longitude, yelp_url, saved_home_id)
 
-    return redirect('/users')
+    return redirect(f'/view_home_info/{saved_home_id}')
 
 @app.route('/remove_saved_business', methods=["POST"])
 @login_required
@@ -299,6 +307,19 @@ def remove_saved_business():
 
     return redirect("/users")
 
+@app.route('/remove_saved_bus', methods=["POST"])
+@login_required
+def remove_saved_bus():
+    """removes business from saved_businesses table"""
+    """shown on home_info.html"""
+    
+    saved_home_id = request.form.get("property_id")
+    
+    yelp_id = request.form.get('remove_saved_bus')
+
+    crud.remove_saved_business(yelp_id)
+
+    return redirect(f'/view_home_info/{saved_home_id}')
 
 if __name__ == "__main__":
     connect_to_db(app)

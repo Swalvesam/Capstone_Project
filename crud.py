@@ -122,7 +122,7 @@ def list_businesses(property_id):
 
     return data
 
-def save_new_business(user_id, bus_name, yelp_id, latitude, longitude):
+def save_new_business(user_id, bus_name, yelp_id, latitude, longitude, yelp_url, saved_home_id):
     """creates a new saved business"""
 
     business = SavedBusinesses(
@@ -130,7 +130,9 @@ def save_new_business(user_id, bus_name, yelp_id, latitude, longitude):
         yelp_id = yelp_id,        
         bus_name = bus_name,
         latitude = latitude,
-        longitude = longitude
+        longitude = longitude,
+        yelp_url = yelp_url,
+        saved_home_id = saved_home_id
         )
 
     db.session.add(business)
@@ -159,3 +161,14 @@ def get_address(saved_home_id):
     address = " ".join(old_address)
 
     return address
+
+def saved_businesses(saved_home_id):
+    """ view saved homes based on saved home lat and lng """
+
+    sql = "SELECT bus_name FROM saved_businesses WHERE saved_home_id = :saved_home_id"
+
+    cursor = db.session.execute(sql,{"saved_home_id": saved_home_id})
+
+    bus = cursor.fetchone()
+
+    return bus

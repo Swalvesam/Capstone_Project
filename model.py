@@ -37,7 +37,9 @@ class SavedHomes(db.Model):
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     address = db.Column(db.Text)
+    
     #home_notes = user notes about home
+    #saved_businesses = businesses close to home
 
     user = db.relationship("User", backref="saved_homes")
 
@@ -72,8 +74,12 @@ class SavedBusinesses(db.Model):
     yelp_id = db.Column(db.String)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    yelp_url = db.Column(db.String)
+    saved_home_id = db.Column(db.Integer, db.ForeignKey('saved_homes.saved_home_id'))
+
 
     user = db.relationship("User", backref="saved_businesses")
+    saved_homes = db.relationship("SavedHomes", backref="saved_homes")
 
     def to_dict(self):
         """returns dictionary of saved_businesses"""
