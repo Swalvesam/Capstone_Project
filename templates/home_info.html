@@ -4,8 +4,7 @@
 {% endblock %}
 
 {% block head %}
-<head>
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 
 <style>
 #map {
@@ -23,31 +22,39 @@
     padding: 0;
 
   }
-  
+#markers_info .marker {
+    height: 40px;
+    cursor: pointer;
+}
+
 </style>
 
-<script>
+<script type="text/javascript">
         let homeLatitude= {{ home_latitude | tojson }};
         let homeLongitude = {{ home_longitude | tojson }};
         let homeTitle = {{ home_address | tojson }};
         let businesses = {{ businesses | tojson }};
 </script>
-<script src="/static/google_map.js"></script>
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script>
-    var quill = new Quill('#editor', {
-      theme: 'snow'
-    });
-  </script>
+<!-- jQuery  -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"
+integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+crossorigin="anonymous"> </script>
+<!-- connecting javascript to page -->
+<script type="text/javascript" src="/static/homeInfo.js"></script>
+<!-- google maps api -->
+<script
+defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=initMap">
+</script>
 
-</head>
+
+
 {% endblock%}
 
 {% block body %}
 
 
 <div id="view_home_info">
-    <body>
         <b>Home Address:</b> {{ home_address }}<br>
         <div id="editor">
             <form action="/add_home_note" id="add_home_note" method="POST">
@@ -77,7 +84,13 @@
             <form action="/remove_saved_bus" method="POST" id="remove_saved_business">
                 {% if saved_bus %}
                     {% for b in saved_bus %}
-                        <li>{{b.bus_name}}</li>
+                    <ul id="saved-bus"> 
+                    <li>{{b.bus_name}}</li>
+                        <ul>
+                            <li><a href="{{b.yelp_url}}">View on Yelp</a></li>
+                        <button type="submit" name="remove_saved_bus" value={{b.yelp_id}}>Remove</button>
+                        </ul>
+                    </ul>
                         <button type="submit" name="remove_saved_bus" value={{b.yelp_id}}>Remove</button>
                     {% endfor %}
                 {% endif %}
@@ -88,35 +101,37 @@
         <div id=business_by_location>
             <h2>Businesses Close to Home</h2>
             <p2>
-
-                <ul>
-                {% for bus in businesses %}
-                <form action="/save_business" method="POST">
-
-                    <li> 
-                        {{bus[0]}}<!-- name-->
-                        <input type="hidden" id="name" name="name" value="{{bus[0]}}">
-                        <ul>
-                            <img src="{{bus[1]}}" width="80" height="80"> <!--img -->
-                            <li><a href="{{bus[2]}}">View on Yelp</a></li><!--yelp url-->
-                            <input type="hidden" value="{{bus[3]}}"><!--category-->
-                            <li>Rating: {{bus[4]}}</li><!-- rating-->
-                            <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
-                            <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
-                            <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
-                            <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
-                            <li>Distance: {{bus[6]}} miles</li><!--distance-->
-                            <li>Address: {{bus[7]}}</li><!-- location-->
-                            <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
-                            <input type="hidden" name="yelp_url" value="{{bus[2]}}"><!--yelp url-->
-                            <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to save business-->
-                            <button type="submit">Save</button>
-                        </ul>
-                    </li>
-                </form>
-                {% endfor %}
-                
-                </ul>
+                <div id="markers-info">
+                    <ul>
+                        {% for bus in businesses %} {# loop.index0 #}
+                        <form action="/save_business" method="POST">
+                            <div class="markers">
+                                <li> 
+                                    {{bus[0]}}<!-- name-->
+                                    <input type="hidden" id="name" name="name" value="{{bus[0]}}">
+                                    <ul>
+                                        <img src="{{bus[1]}}" width="80" height="80"> <!--img -->
+                                        <li><a href="{{bus[2]}}">View on Yelp</a></li><!--yelp url-->
+                                        <input type="hidden" value="{{bus[3]}}"><!--category-->
+                                        <li>Rating: {{bus[4]}}</li><!-- rating-->
+                                        <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
+                                        <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
+                                        <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
+                                        <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
+                                        <li>Distance: {{bus[6]}} miles</li><!--distance-->
+                                        <li>Address: {{bus[7]}}</li><!-- location-->
+                                        <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
+                                        <input type="hidden" name="yelp_url" value="{{bus[2]}}"><!--yelp url-->
+                                        <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to save business-->
+                                        <button type="submit">Save</button>
+                                    </ul>
+                                </li>
+                            </div>
+                        </form>
+                        {% endfor %}
+                            
+                    </ul>
+                </div>
 
             </p2>
 
@@ -127,14 +142,10 @@
 
         <h3>Map to go here</h3>
         
-        <div id="map"> </div>
+        <div id="map" class="busMap"> </div>
         <div id="pano"></div>
-        <script
-        async 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0XuVBI4q0&callback=initMap">
-        </script>
         
-    </body>
+    
 
 
 </div>
