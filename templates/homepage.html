@@ -1,29 +1,45 @@
 {% extends 'base.html' %}
 {% block title %}homepage{% endblock %}
-
+{% block head %}
+<link rel="stylesheet"
+href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/homepage.css">
+{% endblock%}
 {% block body%}
+<div class="container-fluid">
+    <div class="container-inner">
+        <h1>Welcome!</h1> <br>
+        <div id="row-fluid">
+            <form action="/login" method="POST">
+                <div class="centering text-center">
+                <label for="register"><h2>Please Login</h2></label><br>
+                <label for="emailAddress" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="emailAddress" aria-describedby="enterEmail">
+                </div>
+                <div class="centering text-center">
+                <label for="enterPassword" class="form-label">Password:</label>
+                <input type="password" name="password" class="form-control" id="enterPassword"><br>
+                </div>
+                <button type="submit" name="login" class="btn btn-primary">Login</button> <br>
+            </form>
+        </div>
 
-<h1>Welcome! Please log in </h1> <br>
-<div id="user_login">
-    <form action="/login" method="POST">
-    Email:
-    <input type="text" name="email"><br>
-    Password:
-    <input type="password" name="password"><br>
-    <button type="submit" name="login">Login</button> <br>
-    </form>
-</div>
-<br>
-<div id="new_user">
-    New user? 
-    <form action="/register" method="POST">
-    First Name:
-    <input type="text" name="first_name"><br>
-    Email:
-    <input type="text" name="new_user_email"><br>
-    Password:
-    <input type="text" name="new_user_password"><br>
-    <button type="submit" name="login">Register</button>
-    </form>
+        <div id="row-fluid">
+            <div class="centering text-center">
+            <form action="/register" method="POST">
+            <label for="register"><h2>New User?</h2></label>
+            </div>
+            <div class="centering text-center">
+                <label for="first_name" class="form-label">First Name</label>
+                <input type="text" name="first_name" class="form-control" id="firstName"><br>
+                <label for="new_user_email" class="form-label">Email</label>
+                <input type="email" name="new_user_email" class="form-control" id="emailAddress" aria-describedby="enterEmail">
+                <label for="new_user_password" class="form-label">Password:</label>
+                <input type="password" name="new_user_password" class="form-control" id="enterPassword"><br>
+            </div>
+                <button type="submit" name="login" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>    
 </div>
 {% endblock %}
