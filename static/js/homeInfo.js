@@ -2,11 +2,31 @@
 
 
 $(document).ready(function () {
+    // Quill editor for home notes
+    const quill = new Quill('#editor-container', {
+        modules: {
+          toolbar: [
+            ['bold', 'italic'],
+            ['link', 'blockquote', 'code-block', 'image'],
+            [{ list: 'ordered' }, { list: 'bullet' }]
+          ]
+        },
+        placeholder: 'Love the Kitchen! Close to Restaurants...',
+        theme: 'snow'
+      });
+    //pulls note body to then return in server.py to add note to database
+    const form = document.querySelector('form');
+      form.onsubmit = function() {
+        // Populate hidden form on submit
+        const note = document.querySelector('input[name=note]');
+        note.value = quill.root.innerHTML;
+      };
+    
 
     const busMarkers = [];
     const busDict = [];
-
-    for( const bus of businesses) {
+    //creating a busDictionary 
+    for(const bus of businesses) {
         busDict.push( {
         title: bus[0],
         url: bus[2],
@@ -14,7 +34,7 @@ $(document).ready(function () {
         lng: bus[5].longitude,
         })
     }
-    console.log(busDict)
+
     //initiate Google Maps
     initMap();
 
@@ -34,22 +54,8 @@ $(document).ready(function () {
             busMarkers[index].setIcon(normalIcon());        
         }
     );
-    // });
-
-    // busDict = [];
-    // for( const bus of businesses) {
-    //     busDict.push( {
-    //         title: bus[0],
-    //         url: bus[2],
-    //         lat: bus[5].latitude,
-    //         lng: bus[5].longitude,
-    //     })
-    // }
-
+    //create variable to access outside of function
     let homeMap;
-    // let busMarkers = [];
-    // console.log(busMarkers)
-
 
     function initMap() {
         //map that works on home_info.html
@@ -86,6 +92,7 @@ $(document).ready(function () {
             });
         
             newMarker.addListener("click", () => {
+                busWindow.close
                 busWindow.open({
                     anchor: newMarker,
                     map,
@@ -96,29 +103,25 @@ $(document).ready(function () {
 
         };
             
-            const homeMarker = new google.maps.Marker({
+        const homeMarker = new google.maps.Marker({
+            position: savedHomeCoords,
+            icon: "/static/icons/home.png",
+            map: homeMap
+        });
+        
+        const homeView = new google.maps.StreetViewPanorama (
+            document.getElementById("pano"),
+            {
                 position: savedHomeCoords,
-                icon: "/static/icons/home.png",
-                map: homeMap
-            });
-            
-            const homeView = new google.maps.StreetViewPanorama (
-                document.getElementById("pano"),
-                {
-                    position: savedHomeCoords,
-                    pov: {
-                        heading: 0,
-                        pitch: 0,
-                    },
-                }
-            );
-            homeMap.setStreetView(homeView);
+                pov: {
+                    heading: 0,
+                    pitch: 0,
+                },
+            }
+        );
+        homeMap.setStreetView(homeView);
 
-        
-        
-        
     };
-
 
     function normalIcon() {
         return {
@@ -130,7 +133,6 @@ $(document).ready(function () {
         url: '/static/icons/saved.png'
         };
     }
-
 
 });
 

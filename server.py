@@ -110,8 +110,7 @@ def users():
 
     #also passing in saved_businesses to view on user dashboard
     saved_businesses = SavedBusinesses.query.filter_by(user_id=current_user.user_id).all()
-    print("**********users************")
-    print(saved_businesses)
+
 
     # changes saved_businesses into a dictionary
     bus_dict = []
@@ -255,7 +254,7 @@ def add_home_note():
 
     saved_home_id = request.form.get("property_id")
 
-    body = request.form.get("body")
+    body = request.form.get("note")
 
     crud.create_home_note(body,saved_home_id)
     

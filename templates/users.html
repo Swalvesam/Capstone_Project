@@ -79,7 +79,7 @@
         <input type="hidden" name="home_property_id" value="{{home.rm_property_id}}">
         <input type="hidden" name="saved_home_id" value="{{home.saved_home_id}}">
 
-        <button type="submit" name="remove_saved_home" value="{{home.rm_property_id}}">Remove</button>
+        <button type="submit" name="remove_saved_home" value="{{home.rm_property_id}}"class="btn"><i class="bi bi-trash"></i></button>
 
         <button onclick="location.href='/view_home_info/{{home.saved_home_id}}'" type="button">
             View Saved Home</button>
@@ -97,7 +97,7 @@
     <form action="/remove_saved_business" method="POST" id="remove_saved_business">
     {%for business in saved_businesses %}
     <li>{{business.bus_name}}</li>
-    <button type="submit" name="remove_saved_business" value={{business.yelp_id}}>Remove</button>
+    <button type="submit" name="remove_saved_business" value={{business.yelp_id}} class="btn"><i class="bi bi-trash"></i></button>
     </form>
     <a href="{{business.yelp_url}}"><button type="submit">View on Yelp</button></a>
     {% endfor %}
