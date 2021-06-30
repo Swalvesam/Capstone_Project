@@ -1,12 +1,3 @@
 
 /* style google maps on site */
 
-#map {
-    height: 500px;
-    width: 75%;
-  }
-  html, body {
-    margin: 0;
-    padding: 0;
-
-  }

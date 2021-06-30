@@ -1,45 +1,52 @@
 {% extends 'base.html' %}
 {% block title %}homepage{% endblock %}
 {% block head %}
-<link rel="stylesheet"
-href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
+<!-- bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/static/css/homepage.css">
 {% endblock%}
 {% block body%}
-<div class="container-fluid">
-    <div class="container-inner">
-        <h1>Welcome!</h1> <br>
-        <div id="row-fluid">
-            <form action="/login" method="POST">
-                <div class="centering text-center">
-                <label for="register"><h2>Please Login</h2></label><br>
-                <label for="emailAddress" class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" id="emailAddress" aria-describedby="enterEmail">
-                </div>
-                <div class="centering text-center">
-                <label for="enterPassword" class="form-label">Password:</label>
-                <input type="password" name="password" class="form-control" id="enterPassword"><br>
-                </div>
-                <button type="submit" name="login" class="btn btn-primary">Login</button> <br>
-            </form>
-        </div>
+<div class="background-video">
+    <video autoplay muted loop>
+        <source src="/static/homepage.mp4" type="video/webm">
+    </video>
+</div>    
+    <header class="container-fluid d-flex justify-content-right align-items-center
+    text-light" style="height: 691.312px">
+        <div class="row">
+            <h1>Welcome! </h1> <br>
+            <div class="col">
+                
+                <!-- log in  -->
+                <form action="/login" method="POST">
+                    <label for="register"><h2>Please Login</h2></label><br>
+                    <label for="emailAddress" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" id="emailAddress" aria-describedby="enterEmail"> 
+                    <label for="enterPassword" class="form-label">Password:</label>
+                    <input type="password" name="password" class="form-control" id="enterPassword"><br>
 
-        <div id="row-fluid">
-            <div class="centering text-center">
-            <form action="/register" method="POST">
-            <label for="register"><h2>New User?</h2></label>
-            </div>
-            <div class="centering text-center">
-                <label for="first_name" class="form-label">First Name</label>
-                <input type="text" name="first_name" class="form-control" id="firstName"><br>
-                <label for="new_user_email" class="form-label">Email</label>
-                <input type="email" name="new_user_email" class="form-control" id="emailAddress" aria-describedby="enterEmail">
-                <label for="new_user_password" class="form-label">Password:</label>
-                <input type="password" name="new_user_password" class="form-control" id="enterPassword"><br>
-            </div>
-                <button type="submit" name="login" class="btn btn-primary">Register</button>
-            </form>
+                    <button type="submit" name="login" class="btn btn-primary">Login</button> <br>
+              </form>
+
+            <!-- register new user -->
+                <form action="/register" method="POST">
+                <label for="register"><h2>New User?</h2></label><br>
+
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" name="first_name" class="form-control" id="firstName"><br>
+                    <label for="new_user_email" class="form-label">Email</label>
+                    <input type="email" name="new_user_email" class="form-control" id="emailAddress" aria-describedby="enterEmail">
+                    <label for="new_user_password" class="form-label">Password:</label>
+                    <input type="password" name="new_user_password" class="form-control" id="enterPassword"><br>
+
+                    <button type="submit" name="login" class="btn btn-primary">Register</button>
+                </form>
+            </div>    
         </div>
-    </div>    
-</div>
+   
+
 {% endblock %}
