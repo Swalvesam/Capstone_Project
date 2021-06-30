@@ -320,6 +320,7 @@ def remove_saved_bus():
 
     return redirect(f'/view_home_info/{saved_home_id}')
 
+
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(use_reloader=True, use_debugger=True)

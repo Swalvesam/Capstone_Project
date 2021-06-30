@@ -54,6 +54,7 @@ $(document).ready(function () {
             busMarkers[index].setIcon(normalIcon());        
         }
     );
+
     //create variable to access outside of function
     let homeMap;
 
@@ -72,6 +73,8 @@ $(document).ready(function () {
 
         const homeMap = new google.maps.Map(document.querySelector('#map'), mapOptions)
         
+
+
         for (const bus of busDict) {
             const newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(bus.lat, bus.lng),
@@ -87,21 +90,33 @@ $(document).ready(function () {
                 `<a href= ${bus.url}>View on Yelp</a>` +
             '</div>';
         
-            const busWindow = new google.maps.InfoWindow({
+            let busWindow = new google.maps.InfoWindow({
                 content: busContent,
             });
-        
-            newMarker.addListener("click", () => {
-                busWindow.close
-                busWindow.open({
-                    anchor: newMarker,
-                    map,
-                    shouldFocus: false,
-                });
-        
-            });
 
+            //open info window when bus is clicked on
+            newMarker.addListener("click", () => {
+                    busWindow.open({
+                        anchor: newMarker,
+                        map,
+                        shouldFocus: false,
+                    });
+            });
         };
+            // let window;
+            // google.maps.event.addListener(busMarkers, 'click', function(){
+            //     busWindow.setOptions({
+            //         content: busContent
+            //     });
+            //     if (window){
+            //         busWindow.close()
+            //     }
+            //     busWindow.open(homeMap,busMarkers)
+                
+            // })
+
+
+
             
         const homeMarker = new google.maps.Marker({
             position: savedHomeCoords,

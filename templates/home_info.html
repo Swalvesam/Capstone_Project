@@ -5,32 +5,6 @@
 
 {% block head %}
 
-
-<style>
-#map {
-    height: 500px;
-    width: 75%;
-
-  }
-#pano {
-    height: 500px;
-    width: 75%;
-
-  }
-  html, body {
-    margin: 0;
-    padding: 0;
-
-  }
-#markers_info .marker {
-    height: 40px;
-    cursor: pointer;
-}
-
-</style>
-<!-- Bootstrap links -->
-
-
 <script type="text/javascript">
         let homeLatitude= {{ home_latitude | tojson }};
         let homeLongitude = {{ home_longitude | tojson }};
@@ -56,6 +30,14 @@ crossorigin="anonymous"> </script>
 <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
 
+<!-- bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+crossorigin="anonymous"></script>
+
+
 <!-- google maps api -->
 <script
 defer
@@ -67,119 +49,150 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0
 {% endblock%}
 
 {% block body %}
-
-
-<div id="view_home_info">
-        <b>Home Address:</b> {{ home_address }}<br>
-        <div id="form-container" class="container">
-            <form action="/add_home_note" id="add_home_note" method="POST">
-                <input type="hidden" name="property_id" value="{{property_id}}">
-                
-                <label for="homeNote">Thoughts about home</label>
-                <input name="note" type="hidden">
-                <div id="editor-container" for="note">
-                </div>
-
-            <div class="row">
-                <button class="btn btn-primary" type="submit" name="add_note">Add Note</button>
+<section class="container">
+    <nav class="navbar navbar-expand-md navbar-light">
+        <a class="navbar-brand">{{ home_address }}</a>
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navExpandContent2">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navExpandContent2">
+            <div class="navbar-nav">
+                <form action="/return_to_user_dashboard">
+                    <button type="submit" name="return_to_user">{{current_user.first_name}}'s Dashboard</button>
+                </form>
             </div>
-            </form>
-        
-        
+            <div class="navbar-nav">
+                <form action=/logout>
+                    <button type="submit" name="logout">Log Out</button>
+                </form>
+            </div>
         </div>
+    </nav>
+</section>
+<section class="h-100 mx-3 full columns">
+    <div id="view_home_info" class="row h-100">
 
-        <b>Notes</b>
-        
-        <ul>
-
-            
-            <form action="/remove_home_note" method="POST" id="remove_home_note">
-                <input type="hidden" name="property_id" value="{{property_id}}">
-            {% for note in home_notes %}
-            <li>{{note.created_at}}<br>{{note.body | safe}}<br></li>
-            <button type="submit" name="remove_home_note" value={{note.home_note_id}} class="btn"><i class="bi bi-trash"></i></button>
-            {% endfor %}
-            </ul>
-            </form>
-
-        
-
-       
-        <div id="saved-businesses">
-
-            <h2>Saved Businesses</h2>
-            <form action="/remove_saved_bus" method="POST" id="remove_saved_business">
-                {% if saved_bus %}
-                    {% for b in saved_bus %}
-                    <ul id="saved-bus"> 
-                    <li>{{b.bus_name}}</li>
+        <!-- column for home notes -->
+        <aside class="col-4 h-100 d-flex justify-content-center overflow-y">
+            <div id=business_by_location>
+                <h2>Businesses Close to Home</h2>
+                    <div id="markers-info">
                         <ul>
-                            <li><a href="{{b.yelp_url}}">View on Yelp</a></li>
-                        <button type="submit" name="remove_saved_bus" value={{b.yelp_id}} class="btn"><i class="bi bi-trash"></i><</button>
+                            {% for bus in businesses %} {# loop.index0 #}
+                            <form action="/save_business" method="POST">
+                                <div class="markers">
+                                    <li> 
+                                        {{bus[0]}}<!-- name-->
+                                        <input type="hidden" id="name" name="name" value="{{bus[0]}}">
+                                        <ul>
+                                            <img src="{{bus[1]}}" width="80" height="80"> <!--img -->
+                                            <!-- <li><a href="{{bus[2]}}"  ><img class="yelpBurst" src="/static/icons/burst.png" width="5" height="10"></img></a></li>yelp url -->
+                                            <input type="hidden" value="{{bus[3]}}"><br><!--category-->
+                                            {% if bus[4] <= 0.5 -%}  
+                                                <img src="/static/icons/small/0.png"></img>
+                                                {% elif bus[4] <= 1 -%}
+                                                <img src="/static/icons/small/1.png"></img>
+                                                {% elif bus[4] <= 1.5 -%}
+                                                <img src="/static/icons/small/1.5.png"></img>
+                                                {% elif bus[4] <= 2 -%}
+                                                <img src="/static/icons/small/2.png"></img>
+                                                {% elif bus[4] <= 2.5 -%}
+                                                <img src="/static/icons/small/2.5.png"></img>
+                                                {% elif bus[4] <= 3 -%}
+                                                <img src="/static/icons/small/3.png"></img>
+                                                {% elif bus[4] <= 3.5 -%}
+                                                <img src="/static/icons/small/3.5.png"></img>
+                                                {% elif bus[4] <= 4 -%}
+                                                <img src="/static/icons/small/4.png"></img>
+                                                {% elif bus[4] <= 4.5 -%}
+                                                <img src="/static/icons/small/4.5.png"></img>
+                                                {% else %}
+                                                <img src="/static/icons/small/5.png"></img>
+                                            {% endif %}
+
+                                            <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
+                                            <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
+                                            <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
+                                            <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
+                                            <li>Distance: {{bus[6]}} miles</li><!--distance-->
+                                            <li>Address: {{bus[7]}}</li><!-- location-->
+                                            <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
+                                            <input type="hidden" name="yelp_url" value="{{bus[2]}}"><!--yelp url-->
+                                            <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to save business-->
+                                            <button type="submit" class="btn"><i class="bi bi-save"> Save</i></button><a href="{{bus[2]}}" ><img class="yelpBurst" src="/static/icons/yelp.png" width="25" height="50"></img></a>
+                                        </ul>
+                                    </li>
+                                </div>
+                            </form>
+                            {% endfor %}
+                                
                         </ul>
-                    </ul>
-                    {% endfor %}
-                {% endif %}
-                <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to remove business-->
-            </form> 
-        </div>
-
-        <div id=business_by_location>
-            <h2>Businesses Close to Home</h2>
-            <p2>
-                <div id="markers-info">
-                    <ul>
-                        {% for bus in businesses %} {# loop.index0 #}
-                        <form action="/save_business" method="POST">
-                            <div class="markers">
-                                <li> 
-                                    {{bus[0]}}<!-- name-->
-                                    <input type="hidden" id="name" name="name" value="{{bus[0]}}">
-                                    <ul>
-                                        <img src="{{bus[1]}}" width="80" height="80"> <!--img -->
-                                        <li><a href="{{bus[2]}}"  ><img class="yelpBurst" src="/static/icons/burst.png"></img></a></li><!--yelp url-->
-                                        <input type="hidden" value="{{bus[3]}}"><!--category-->
-                                        <li>Rating: {{bus[4]}}</li><!-- rating-->
-                                        <li>Review Count: {{bus[8]}}</li> <!-- # of reviews for business-->
-                                        <input type="hidden" name ="coordinates" value="{{bus[5]}}"><!--coordinates-->
-                                        <input type="hidden" name="latitude" value="{{bus[5].latitude}}"><!--latitude-->
-                                        <input type="hidden" name="longitude" value="{{bus[5].longitude}}"><!--longitude-->
-                                        <li>Distance: {{bus[6]}} miles</li><!--distance-->
-                                        <li>Address: {{bus[7]}}</li><!-- location-->
-                                        <input type="hidden" name="yelp_id"value="{{bus[9]}}"> <!--yelp id-->
-                                        <input type="hidden" name="yelp_url" value="{{bus[2]}}"><!--yelp url-->
-                                        <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to save business-->
-                                        <button type="submit">Save</button>
-                                    </ul>
-                                </li>
-                            </div>
-                        </form>
-                        {% endfor %}
-                            
-                    </ul>
+                    </div>
+            </div>   
+        </aside>
+        <!-- Google Maps -->
+        <main class="col h-100 w-100">    
+                <div class="container py-4 content overflow-x">
+                    <div id="map" class="busMap"><br> </div>
+                
+                    <div id="pano"></div>
                 </div>
-
-            </p2>
-
-        </div>
+        </main> 
+    </div>  
+</section>
+<section class="container mt-4">
+    <div class="row">
+            <div id="form-container" class="container">
+                <form action="/add_home_note" id="add_home_note" method="POST">
+                    <input type="hidden" name="property_id" value="{{property_id}}">
+                    <label for="homeNote">Thoughts about home:</label>
+                    <input name="note" type="hidden">
+                    <div id="editor-container" for="note">
+                    </div>
+            
+                <div class="row">
+                    <button class="btn btn-primary" type="submit" name="add_note">Add Note</button>
+                </div>
+                </form>
+            
+                <b>Notes</b>
+                <ul>
+                <form action="/remove_home_note" method="POST" id="remove_home_note">
+                    <input type="hidden" name="property_id" value="{{property_id}}">
+                {% for note in home_notes %}
+                <li>{{note.created_at}}<br>{{note.body | safe}}<br></li>
+                <button type="submit" name="remove_home_note" value={{note.home_note_id}} class="btn"><i class="bi bi-trash"> </i> </button>
+                {% endfor %}
+                </ul>
+                </form>
+            
+                <div id="saved-businesses">
+            
+                    <h2>Saved Businesses</h2>
+                    <form action="/remove_saved_bus" method="POST" id="remove_saved_business">
+                        {% if saved_bus %}
+                            {% for b in saved_bus %}
+                            <ul id="saved-bus"> 
+                                {{b.bus_name}}
+                                <a href="{{b.yelp_url}}"><img class="yelpBurst" src="/static/icons/yelp.png" width="25" height="50"></img></a>
+                                <button type="submit" name="remove_saved_bus" value={{b.yelp_id}} class="btn"><i class="bi bi-trash"></i></button>
+                            </ul>
+                            {% endfor %}
+                        {% endif %}
+                        <input type="hidden" name="property_id" value="{{property_id}}"><!--pulling in to remove business-->
+                    </form> 
+                </div>
+            </div>   
+    
         <input type="hidden" id="home-longitude" value={{home_longitude}}>
         <input type="hidden" id="home-latitude" value={{home_latitude}}>
-        
-
-        <h3>Map to go here</h3>
-        
-        <div id="map" class="busMap"> </div>
-        <div id="pano"></div>
-        
-    
-
-
-</div>
-<div>
-    <form action="/return_to_user_dashboard">
-        <button type="submit" name="return_to_user">Return to User Dashboard</button>
-    </form>
-</div>
-
+    </div>     
+</section>
 
 {% endblock %}
+
+   
