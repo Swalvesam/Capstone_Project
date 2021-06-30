@@ -50,7 +50,6 @@ $(document).ready(function () {
         function() {
             // first we need to know which <div class="marker"></div> we hovered
             let index = $('.markers').index(this);
-            console.log(index)
             busMarkers[index].setIcon(normalIcon());        
         }
     );
@@ -103,19 +102,6 @@ $(document).ready(function () {
                     });
             });
         };
-            // let window;
-            // google.maps.event.addListener(busMarkers, 'click', function(){
-            //     busWindow.setOptions({
-            //         content: busContent
-            //     });
-            //     if (window){
-            //         busWindow.close()
-            //     }
-            //     busWindow.open(homeMap,busMarkers)
-                
-            // })
-
-
 
             
         const homeMarker = new google.maps.Marker({

@@ -119,26 +119,3 @@ html,body {
   padding: 0;
 }
 
-
-
-<!-- {% if {{bus[4]}} = ".5"  %} 
-<img src="/static/icons/small/small_0.png">
-{% else {bus[4]}} = 1 -%}
-<img src="/static/icons/small/small_1.png">
-{% else {bus[4]}} = 1.5 -%}
-<img src="/static/icons/small/small_1_half.png">
-{% else {bus[4]}} = 2 -%}
-<img src="/static/icons/small/small_2.png">
-{% else {bus[4]}} = 2.5 -%}
-<img src="/static/icons/small/small_2_half.png">
-{% else {bus[4]}} = 3 -%}
-<img src="/static/icons/small/small_3.png">
-{% else {bus[4]}} = 3.5 -%}
-<img src="/static/icons/small/small_3_half.png">
-{% else {bus[4]}} = 4 -%}
-<img src="/static/icons/small/small_4.png">
-{% else {bus[4]}} = 4.5 -%}
-<img src="/static/icons/small/small_4_half.png">
-{% else {bus[4]}} = 5 -%}
-<img src="/static/icons/small/small_5.png">
-{% endif %} -->

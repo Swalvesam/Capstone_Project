@@ -90,9 +90,8 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0
                                         <input type="hidden" id="name" name="name" value="{{bus[0]}}">
                                         <ul>
                                             <img src="{{bus[1]}}" width="80" height="80"> <!--img -->
-                                            <!-- <li><a href="{{bus[2]}}"  ><img class="yelpBurst" src="/static/icons/burst.png" width="5" height="10"></img></a></li>yelp url -->
                                             <input type="hidden" value="{{bus[3]}}"><br><!--category-->
-                                            {% if bus[4] <= 0.5 -%}  
+                                            {% if bus[4] <= 0.5 -%}  <!--ratings-->
                                                 <img src="/static/icons/small/0.png"></img>
                                                 {% elif bus[4] <= 1 -%}
                                                 <img src="/static/icons/small/1.png"></img>
