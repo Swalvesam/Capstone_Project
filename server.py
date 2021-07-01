@@ -280,7 +280,6 @@ def remove_home_note():
 def save_business():
     """saves businesses to user dashboard"""
     
-
     user_id = current_user.user_id
     bus_name = request.form.get("name")
     yelp_id = request.form.get("yelp_id")
@@ -289,8 +288,14 @@ def save_business():
     yelp_url = request.form.get("yelp_url")
     saved_home_id = request.form.get("property_id")
 
-    saved_business = SavedBusinesses.query.filter_by(yelp_id=yelp_id).first()
 
+
+
+    saved_business = SavedBusinesses.query.filter_by(yelp_id=yelp_id).first()
+    print("*******************************")
+    print(saved_business)
+
+    
     if not saved_business:
         crud.save_new_business(user_id, bus_name, yelp_id, latitude, longitude, yelp_url, saved_home_id)
 
@@ -301,6 +306,7 @@ def save_business():
 def remove_saved_business():
     """removes business from saved_businesses table"""
     yelp_id = request.form.get('remove_saved_business')
+    """shown on users.html"""
 
     crud.remove_saved_business(yelp_id)
 
@@ -312,7 +318,7 @@ def remove_saved_bus():
     """removes business from saved_businesses table"""
     """shown on home_info.html"""
     
-    saved_home_id = request.form.get("property_id")
+    saved_home_id = request.form.get("saved_home_id")
     
     yelp_id = request.form.get('remove_saved_bus')
 

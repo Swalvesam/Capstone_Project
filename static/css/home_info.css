@@ -2,43 +2,20 @@
 
 
   #form-container {
-    width: 250px;
+    width: 100%;
+    /* display: flex;
+    justify-content: space-between; */
   }
   
-  .row {
-    margin-top: 0px;
-  }
-  .row.form-group {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-  .btn {
-    margin-left: 15px;
-  }
-  
-  .change-link {
-    background-color: #000;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    bottom: 0;
-    color: #fff;
-    opacity: 0.8;
-    padding: 2px;
-    position: absolute;
-    text-align: center;
-    width: 150px;
-  }
-  .change-link:hover {
-    color: #fff;
-    text-decoration: none;
-  }
-  
+
+
   img {
     width: 150px;
   }
   
   #editor-container {
-    height: 130px;
+    height: 100px;
+ 
   }
 
 .navbar {
@@ -49,64 +26,17 @@
   justify-content: space-between;
 }
 
-/* bg-light {
-  /* background-color: #f8f9fa!important; */
-/* } */ */
 
-:root {
-  --bs-blue: #0d6efd;
-  --bs-indigo: #6610f2;
-  --bs-purple: #6f42c1;
-  --bs-pink: #d63384;
-  --bs-red: #dc3545;
-  --bs-orange: #fd7e14;
-  --bs-yellow: #ffc107;
-  --bs-green: #198754;
-  --bs-teal: #20c997;
-  --bs-cyan: #0dcaf0;
-  --bs-white: #fff;
-  --bs-gray: #6c757d;
-  --bs-gray-dark: #343a40;
-  --bs-primary: #0d6efd;
-  --bs-secondary: #6c757d;
-  --bs-success: #198754;
-  --bs-info: #0dcaf0;
-  --bs-warning: #ffc107;
-  --bs-danger: #dc3545;
-  --bs-light: #f8f9fa;
-  --bs-dark: #212529;
-  --bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  --bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-}
-
-html,body {
-  margin: 0;
-  font-family: var(--bs-font-sans-serif);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  /* color: #212529; */
-  /* background-color: #fff; */
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-  margin: 0;
-  padding: 0;
-}
-.overflow-x {
-  overflow-x: hidden;
-}
-.overflow-y {
-  overflow-y: auto;
-}
 #map {
   height: 500px;
-  width: 100%;
+  width: 50%;
+  float: left;
 
 }
 #pano {
   height: 500px;
-  width: 100%;
+  width: 50%;
+  float: left;
 
 }
 
@@ -114,8 +44,60 @@ html,body {
   height: 40px;
   cursor: pointer;
 }
+html, body {
+  width: 100%;
+  height: 100%;
 
-.py-4 {
-  padding: 0;
 }
 
+/* .overflow-y {
+  overflow-y: auto !important;
+} */
+
+main {
+  overflow: auto;
+}
+
+.content {
+  margin-bottom: 25% !important;
+}
+
+.navbar-content{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+button {
+  border-radius: 4px !important;
+  background: white;
+  color: rebeccapurple;
+  border: solid 1px rebeccapurple; 
+  /* ::hover {  
+    cursor:pointer
+   }; */
+}
+
+button:hover {
+  transition: .3s;
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+  cursor: pointer;
+}
+
+li {
+  list-style-type: none;
+}
+ul {
+  list-style-type: none;
+}
+
+.notes {
+  width: 100%;
+
+}

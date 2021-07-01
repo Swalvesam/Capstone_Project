@@ -15,13 +15,15 @@ $(document).ready(function () {
         theme: 'snow'
       });
     //pulls note body to then return in server.py to add note to database
-    const form = document.querySelector('form');
+    const form = document.querySelector('#add_home_note');
+    console.log(form)
       form.onsubmit = function() {
         // Populate hidden form on submit
         const note = document.querySelector('input[name=note]');
         note.value = quill.root.innerHTML;
       };
     
+
 
     const busMarkers = [];
     const busDict = [];
@@ -53,6 +55,7 @@ $(document).ready(function () {
             busMarkers[index].setIcon(normalIcon());        
         }
     );
+
 
     //create variable to access outside of function
     let homeMap;

@@ -61,7 +61,7 @@ class HomeNotes(db.Model):
 
     def __repr__(self):
         """Show info about Home Notes"""
-        return f'<home_note_id: {self.home_note_id} created_at: {self.created_at} saved_home_id: {self.saved_home_id}>'
+        return f'<home_body: {self.body} created_at: {self.created_at} saved_home_id: {self.saved_home_id}>'
 
 class SavedBusinesses(db.Model):
     """Businesses saved by user"""
