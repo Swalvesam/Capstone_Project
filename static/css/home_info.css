@@ -5,9 +5,10 @@
     width: 100%;
     /* display: flex;
     justify-content: space-between; */
+    box-shadow: 0 0 20px rgba(33,33,33,.2);
+
   }
   
-
 
   img {
     width: 150px;
@@ -15,8 +16,11 @@
   
   #editor-container {
     height: 100px;
+    /* box-shadow: 0 0 20px rgba(33,33,33,.2); */
+
  
   }
+ 
 
 .navbar {
   position: relative;
@@ -24,19 +28,21 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-}
 
+}
 
 #map {
   height: 500px;
   width: 50%;
   float: left;
+  box-shadow: 0 0 20px rgba(33,33,33,.2);
 
 }
 #pano {
   height: 500px;
   width: 50%;
   float: left;
+  box-shadow: 0 0 20px rgba(33,33,33,.2);
 
 }
 
@@ -48,6 +54,7 @@ html, body {
   width: 100%;
   height: 100%;
 
+
 }
 
 /* .overflow-y {
@@ -56,6 +63,7 @@ html, body {
 
 main {
   overflow: auto;
+
 }
 
 .content {
@@ -77,11 +85,8 @@ main {
 button {
   border-radius: 4px !important;
   background: white;
-  color: rebeccapurple;
-  border: solid 1px rebeccapurple; 
-  /* ::hover {  
-    cursor:pointer
-   }; */
+  color: #3c3c3c;
+  border: solid 1px #3c3c3c; 
 }
 
 button:hover {
@@ -100,4 +105,23 @@ ul {
 .notes {
   width: 100%;
 
+}
+
+.card {  
+  /* background-color: #a5b9a2; */
+  /* border-radius: 1px;
+  border-color: #95a792;; */
+  box-shadow: 0 0 20px rgba(33,33,33,.2);
+  
+}
+
+#bus-list {
+  background-color: #95a792;
+  border-radius: 5px;
+  border-color: #95a792;
+}
+
+.bus-Header {
+  display: flex;
+  justify-content: space-around;
 }

@@ -16,34 +16,42 @@ crossorigin="anonymous"></script>
     </video>
 </div>    
     <header class="container-fluid d-flex justify-content-right align-items-center
-    text-light" style="height: 691.312px">
+    text-dark" style="height: 700px">
         <div class="row">
             <h1>Welcome! </h1> <br>
             <div class="col">
                 
                 <!-- log in  -->
                 <form action="/login" method="POST">
-                    <label for="register"><h2>Please Login</h2></label><br>
-                    <label for="emailAddress" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="emailAddress" aria-describedby="enterEmail"> 
-                    <label for="enterPassword" class="form-label">Password:</label>
-                    <input type="password" name="password" class="form-control" id="enterPassword"><br>
-
-                    <button type="submit" name="login" class="btn btn-primary">Login</button> <br>
+                    <label><h2>Please Login</h2></label><br>
+                    <div class="form-floating mb-3">
+                        <input type="email" name="email" class="form-control" id="floatingInput"> 
+                        <label for="floatingInput">Email</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" name="password" class="form-control" id="floatingPassword"><br>
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <button type="submit" name="login" class="btn btn-outline-dark">Login</button> <br>
               </form>
 
             <!-- register new user -->
                 <form action="/register" method="POST">
                 <label for="register"><h2>New User?</h2></label><br>
-
-                    <label for="first_name" class="form-label">First Name</label>
-                    <input type="text" name="first_name" class="form-control" id="firstName"><br>
-                    <label for="new_user_email" class="form-label">Email</label>
-                    <input type="email" name="new_user_email" class="form-control" id="emailAddress" aria-describedby="enterEmail">
-                    <label for="new_user_password" class="form-label">Password:</label>
-                    <input type="password" name="new_user_password" class="form-control" id="enterPassword"><br>
-
-                    <button type="submit" name="login" class="btn btn-primary">Register</button>
+                    <div class="form-floating">
+                        <input type="text" name="first_name" class="form-control" id="floatingName"><br>
+                        <label for="floatingName">First Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" name="new_user_email" class="form-control" id="floatingInput">
+                        <label for="floatingInput">Email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                    <input type="password" name="new_user_password" class="form-control" id="floatingPassword"><br>
+                    <label for="floatingPassword">Password</label>
+                    
+                    <button type="submit" name="login" class="btn btn-outline-dark">Register</button>
+                    </div>
                 </form>
             </div>    
         </div>

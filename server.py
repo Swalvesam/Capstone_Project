@@ -295,7 +295,7 @@ def save_business():
     print("*******************************")
     print(saved_business)
 
-    
+
     if not saved_business:
         crud.save_new_business(user_id, bus_name, yelp_id, latitude, longitude, yelp_url, saved_home_id)
 
@@ -305,8 +305,10 @@ def save_business():
 @login_required
 def remove_saved_business():
     """removes business from saved_businesses table"""
-    yelp_id = request.form.get('remove_saved_business')
     """shown on users.html"""
+    
+    yelp_id = request.form.get('remove_saved_business')
+
 
     crud.remove_saved_business(yelp_id)
 

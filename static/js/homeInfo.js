@@ -69,7 +69,7 @@ $(document).ready(function () {
         
         let mapOptions = {        
             center: savedHomeCoords,
-            zoom: 12,
+            zoom: 13,
             mapId: 'e54bf19c5f6ff97',
         };
 

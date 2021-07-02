@@ -4,6 +4,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background-color: #eeecec;
   }
   
   .overflow-y {
@@ -21,3 +22,41 @@ html, body {
     width: 100%;
     text-align: left;
   }
+
+#home-search {
+  display: flex;
+  flex-direction: row;
+  width: 100%
+  
+}
+
+.form-control, .form-select {
+  background-color: #dddddd;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(33,33,33,.2);
+}
+
+#saved{
+background-color: #95a792;
+border-radius: 5px;
+box-shadow: 0 0 20px rgba(33,33,33,.2);
+}
+
+.card, .list-group-item{  
+  /* background-color: #a5b9a2; */
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(33,33,33,.2);
+}
+
+button, {
+  border-radius: 4px !important;
+  background: rgb(243, 242, 242);
+  color: #3c3c3c;
+  border: solid 1px #3c3c3c; 
+}
+
+button:hover {
+  transition: .3s;
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+  cursor: pointer;
+}

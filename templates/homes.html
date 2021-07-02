@@ -6,18 +6,7 @@
 <script> 
     let data = {{ data | tojson }}
 </script>
-<style>
-    #home-map {
-        height: 500px;
-        width: 75%;
-    
-      }
-    html, body {
-    margin: 0;
-    padding: 0;
 
-    }
-</style>
 
 <!-- bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -26,7 +15,7 @@ integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG
 integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
 crossorigin="anonymous"></script>
 <!-- connects css -->
-<link rel="stylesheet" href="/static/css/home_info.css">
+<link rel="stylesheet" href="/static/css/homes.css">
 
 <!-- jQuery  -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"
@@ -42,40 +31,70 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9kZSGr66VUlUwXP7odZ3fv0
 {% endblock %}
 {% block body%}
 
-<body>
-<h1>Home Search Results</h1>
-<div id="markers-info" class="home_search_results">
 
-    {% for d in data %}   
-        <form action="/save_home" method="POST">
-            <div class="markers">
-                <ul>
-                    <li>{{ d["rawAddress"] }}</li>
-                    <li>Price: {{d["price"]}}</li>
-                    <li>Bedrooms: {{d["bedrooms"]}}</li>
-                    <li>Bathrooms:{{d["bathrooms"]}}</li>
-                    <li>Property Type: {{d["propertyType"]}}</li>
-                    <li>Days on Market: {{d["daysOnMarket"]}}</li>
-                </ul>
-                <input type="hidden" name="address" value="{{ d['rawAddress'] }}">
-                <input type="hidden" name="rm_property_id" value="{{ d['id'] }}">
-                <input type="hidden" name="longitude" value="{{ d['longitude'] }}">
-                <input type="hidden" name="latitude" value="{{ d['latitude'] }}">
-                <button type="submit">Save</button>
+
+<section class="container">
+
+    <nav class="navbar navbar-expand-md navbar-light">
+        <div class="navbar-content">
+            <a class="navbar-brand">Home Search Results</a>
+
+                <div class="buttons">
+                <form action="/return_to_user_dashboard">
+                    <button type="submit" name="return_to_user">{{current_user.first_name}}'s Dashboard</button>
+                </form>
+
+
+                <form action=/logout>
+                    <button type="submit" name="logout">Log Out</button>
+                </form>
+                </div>
+        </div>    
+    </nav>
+</section>
+
+<section class="h-100 mx-3 full-columns">
+    <div class="row h-100">
+        <aside class="col-4 h-100 d-flex justify-content-center">
+        <div id="home-results" class="container my-4">    
+            <div id="markers-info" class="home_search_results">
+                {% for d in data %}   
+                <form action="/save_home" method="POST">
+                <div class="markers">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ d["rawAddress"] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Price:{{d["price"]}}</h6>
+                            <p class="card-text">
+                                <li>Bedrooms: {{d["bedrooms"]}}</li>
+                                <li>Bathrooms:{{d["bathrooms"]}}</li>
+                                <li>Property Type: {{d["propertyType"]}}</li>
+                                <li>Days on Market: {{d["daysOnMarket"]}}</li>
+                                <input type="hidden" name="address" value="{{ d['rawAddress'] }}">
+                                <input type="hidden" name="rm_property_id" value="{{ d['id'] }}">
+                                <input type="hidden" name="longitude" value="{{ d['longitude'] }}">
+                                <input type="hidden" name="latitude" value="{{ d['latitude'] }}">
+                                <button type="submit" ><i class="bi bi-star"> Save</i></button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </form>
+                {% endfor %}
             </div>
+        </div>
+        </aside>
+     
+    
+        <main class="col h-100">
+            <div class="container py-3 content">
+                <div id="home-map"> </div>
+            </div>
+        </main> 
+    </div>       
+</section>
 
-            </form>
-    {% endfor %}
-
-</div>
-<div id="home-map"> </div>
 
 
-</body>
 
-<div>
-    <form action="/return_to_user_dashboard">
-        <button type="submit" name="return_to_user">Return to User Dashboard</button>
-    </form>
-</div>
 {% endblock %}
