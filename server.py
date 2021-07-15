@@ -12,7 +12,7 @@ import jinja2
 from datetime import datetime, date
 
 #for API requests
-# import request, json
+import request, json
 import os
 
 import crud
@@ -331,5 +331,5 @@ def remove_saved_bus():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(use_reloader=True, use_debugger=True)
+    app.run()
  
