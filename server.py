@@ -12,7 +12,7 @@ import jinja2
 from datetime import datetime, date
 
 #for API requests
-import request, json
+import requests, json
 import os
 
 import crud
